@@ -424,8 +424,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                     running = false;
                     start.setEnabled(true);
                     //The Winner is...
-                    Object message = getWinnerList();
-                    JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION);
+                    String message = getWinnerList();
+                    if (!message.equals("")){
+                    	JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION);
+                    }
+
                 }
                 renderLife.repaint();
                 try {
@@ -557,32 +560,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     private String getWinnerList() {
         String list = "";
-
-        /*List<IPlayer> arrlist = new ArrayList<IPlayer>();
-    	
-    	for (Map.Entry pair : iPlayerList.entrySet()) {
-    		IPlayer ip = (IPlayer) pair.getValue();
-    		arrlist.add(ip);
-    	}
-
-        Collections.sort(arrlist, new Comparator<IPlayer>() {
-            @Override
-            public int compare(IPlayer p1, IPlayer p2) {
-            	try {
-					if (p1.getPoints() == p2.getPoints()) {
-						return 0;
-					} else if (p1.getPoints() > p2.getPoints()) {
-						return -1;
-					} else {
-						return 1;
-					}
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return 0;
-            }
-        });*/
+        
         ArrayList<IPlayer> arrlist = sortPlayerAfterPoints();
 
         for (IPlayer i : arrlist) {
