@@ -119,7 +119,6 @@ public class MultiAgent {
         };
         videoFrame.addWindowListener(exitListener);
         videoFrame.setResizable(false);
-        //videoFrame.setLocationRelativeTo(null);
         final JFXPanel fxPanel = new JFXPanel();
         videoFrame.add(fxPanel);
 
