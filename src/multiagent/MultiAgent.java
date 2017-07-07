@@ -62,7 +62,7 @@ public class MultiAgent {
     static SoundLoopExample sl;
 
     public static void main(String[] args) {
-        
+       	Platform.setImplicitExit(false);   
 
         runRun = new Runnable() {
 
@@ -78,9 +78,10 @@ public class MultiAgent {
                     });
                     frame.setVisible(true);
 
-                    player.pause();
-                    videoFrame.dispose();
-                    new SoundClip("Loaded");
+		            player.pause();
+		            videoFrame.dispose();
+		            new SoundClip("Loaded");
+		            sl = new SoundLoopExample();
                 });
 
             }
