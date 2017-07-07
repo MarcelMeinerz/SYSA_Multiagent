@@ -9,20 +9,15 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.SplashScreen;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
 import java.net.URI;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -34,9 +29,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import multiagent.gui.ServerFrame;
 
 /**
@@ -101,14 +93,14 @@ public class MultiAgent {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                /*Platform.setImplicitExit(false);
+                Platform.setImplicitExit(false);
                 splashInit();           // initialize splash overlay drawing parameters
                 appInit();              // simulate what an application would do 
                 // before starting
                 if (mySplash != null) // check if we really had a spash screen
                 {
                     mySplash.close();   // if so we're now done with it
-                }*/
+                }
                 initAndShowGUI();
             }
         });
@@ -127,14 +119,14 @@ public class MultiAgent {
         };
         videoFrame.addWindowListener(exitListener);
         videoFrame.setResizable(false);
-        videoFrame.setLocationRelativeTo(null);
+        //videoFrame.setLocationRelativeTo(null);
         final JFXPanel fxPanel = new JFXPanel();
         videoFrame.add(fxPanel);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 2);
-        int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 2);
-        //videoFrame.setLocation(x, y);
+        int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
+        int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
+        videoFrame.setLocation(x,y);
         
         Platform.runLater(new Runnable() {
             @Override
