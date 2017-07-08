@@ -683,6 +683,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         playerCount = 0;
         playerList.removeAll();
         iPlayerList.clear();
+        dominator = "";
+        firstBlood = false;
     }
 
     public boolean checkSpawnTemp() {
