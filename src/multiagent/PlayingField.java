@@ -151,6 +151,8 @@ public class PlayingField implements Serializable {
                         		}
                         	}                       	                        	
                             x -= 1;
+                        } else {
+                            return false;
                         }
                     } else {
                         return false;
@@ -168,6 +170,8 @@ public class PlayingField implements Serializable {
                         		}
                         	}
                             y -= 1;
+                        } else {
+                            return false;
                         }
 
                     } else {
@@ -186,6 +190,8 @@ public class PlayingField implements Serializable {
                         		}
                         	} 
                             x += 1;
+                        } else {
+                            return false;
                         }
 
                     } else {
@@ -204,6 +210,8 @@ public class PlayingField implements Serializable {
                         		}
                         	}
                             y += 1;
+                        } else {
+                            return false;
                         }
                     } else {
                         return false;
@@ -273,6 +281,8 @@ public class PlayingField implements Serializable {
                         	} 
                             x -= 1;
                             moved = true;
+                        } else {
+                            break;
                         }
                     }
                     break;
@@ -289,6 +299,8 @@ public class PlayingField implements Serializable {
                         	}
                             y -= 1;
                             moved = true;
+                        } else {
+                            break;
                         }
 
                     }
@@ -306,6 +318,8 @@ public class PlayingField implements Serializable {
                         	} 
                             x += 1;
                             moved = true;
+                        } else {
+                            break;
                         }
 
                     }
@@ -323,6 +337,8 @@ public class PlayingField implements Serializable {
                         	} 
                             y += 1;
                             moved = true;
+                        } else {
+                            break;
                         }
 
                     }

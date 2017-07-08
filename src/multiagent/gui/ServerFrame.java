@@ -730,7 +730,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             //System.out.println("Temperature normal, set to 0");
         }
 
-        if (playingField.getSpawnTemperature() >= 5) {
+        if (playingField.getSpawnTemperature() >= 10) {
             new SoundClip("BallReset", -1);
             System.out.println("Temperature too hot, explosion");
             playingField.setSpawnTemperature(0);
