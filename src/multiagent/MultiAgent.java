@@ -94,8 +94,8 @@ public class MultiAgent {
             @Override
             public void run() {
                 Platform.setImplicitExit(false);
-                splashInit();           // initialize splash overlay drawing parameters
-                appInit();              // simulate what an application would do 
+                /*splashInit();           // initialize splash overlay drawing parameters
+                appInit();              // simulate what an application would do */
                 // before starting
                 if (mySplash != null) // check if we really had a spash screen
                 {
