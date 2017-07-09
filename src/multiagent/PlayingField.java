@@ -173,7 +173,6 @@ public class PlayingField implements Serializable {
                         } else {
                             return false;
                         }
-
                     } else {
                         return false;
                     }
@@ -193,7 +192,6 @@ public class PlayingField implements Serializable {
                         } else {
                             return false;
                         }
-
                     } else {
                         return false;
                     }

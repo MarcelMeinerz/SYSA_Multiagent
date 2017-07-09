@@ -111,8 +111,8 @@ public interface IAgent extends Remote {
     
     public void setRememberField(PlayingField rememberField) throws RemoteException;
 
-    public void initializeRememberField();
+    public void initializeRememberField() throws RemoteException;
 
-	public void mergeRememberField();
+	public void mergeRememberField() throws RemoteException;
 	
 }
