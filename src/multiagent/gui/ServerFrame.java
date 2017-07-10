@@ -7,9 +7,6 @@ package multiagent.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -19,7 +16,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +27,7 @@ import multiagent.AgentImpl;
 import multiagent.remote.IAgent;
 import multiagent.PlayingField;
 import multiagent.SoundClip;
+import multiagent.SoundLoopExample;
 import multiagent.remote.IMultiAgentServer;
 import multiagent.remote.IPlayer;
 import multiagent.network.MultiAgentServer;
@@ -62,6 +59,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     //Sound indicators
     private String dominator;
     private boolean firstBlood;
+    SoundLoopExample sl;
 
     /**
      * Creates new form ServerFrame
@@ -114,6 +112,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         } catch (MalformedURLException | RemoteException e) {
             this.jTextArea1.append("\nServer is offline, something goes wrong!!!");
             connect = false;
+        }
+        if(dialog.getSoundBox().isSelected()){
+            sl = new SoundLoopExample();
         }
         reconnectBtn.setEnabled(!connect);
 
@@ -240,9 +241,15 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         if (!aborted) {
             return;
         }
-
-        new SoundClip("Play", -1);
-
+        this.sl.getPlayer().stop();
+        if (dialog.getSoundBox().isSelected()) {
+            new SoundClip("Play", -1);
+            try {
+                this.sl.start(null);
+            } catch (Exception ex) {
+                Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         reload();
         playingField.setPlayerCount(playerCount);
 
@@ -470,8 +477,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                     start.setEnabled(true);
                     //The Winner is...
                     String message = getWinnerList();
-                    if (!message.equals("")){
-                    	JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION);
+                    if (!message.equals("")) {
+                        JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION);
                     }
 
                 }
@@ -605,7 +612,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     private String getWinnerList() {
         String list = "";
-        
+
         ArrayList<IPlayer> arrlist = sortPlayerAfterPoints();
 
         for (IPlayer i : arrlist) {
@@ -666,6 +673,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 IPlayer player = (IPlayer) pair.getValue();
                 try {
                     player.setPoints(0);
+                    player.resetStrategy();
                     addNewAgent(player, player.getStrategy());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);

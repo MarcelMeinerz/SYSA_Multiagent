@@ -33,4 +33,6 @@ public interface IPlayer extends Remote{
     public void dispose() throws RemoteException;
     
     public void setName(String name) throws RemoteException;
+    
+    public void resetStrategy() throws RemoteException;
 }

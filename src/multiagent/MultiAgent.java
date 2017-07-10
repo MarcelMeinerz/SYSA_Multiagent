@@ -51,10 +51,10 @@ public class MultiAgent {
     static double scale = 0.7;
     static JFrame videoFrame;
     static MediaPlayer player;
-    static SoundLoopExample sl;
+    
 
     public static void main(String[] args) {
-       	Platform.setImplicitExit(false);   
+        Platform.setImplicitExit(false);
 
         runRun = new Runnable() {
 
@@ -70,10 +70,10 @@ public class MultiAgent {
                     });
                     frame.setVisible(true);
 
-		            player.pause();
-		            videoFrame.dispose();
-		            new SoundClip("Loaded");
-		            sl = new SoundLoopExample();
+                    player.pause();
+                    videoFrame.dispose();
+                    new SoundClip("Loaded");
+                    
                 });
 
             }
@@ -125,8 +125,8 @@ public class MultiAgent {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
         int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
-        videoFrame.setLocation(x,y);
-        
+        videoFrame.setLocation(x, y);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

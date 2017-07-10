@@ -23,13 +23,14 @@ import multiagent.util.AgentUtils;
  * @author Marcel_Meinerz (marcel.meinerz@th-bingen.de)
  * @author Steffen_Hollenbach
  * @author Jasmin_Welschbillig
- * 
+ *
  * @version 1.0
- * 
+ *
  *
  */
 public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializable {
-	//Hello World
+    //Hello World
+
     private static int CAPACITY = 2;
 
     private int posx;
@@ -121,6 +122,7 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         this.setOrder(direction);
     }
 
+    @Override
     public boolean requestField(String direction) {
         return playingField.requestField(this, direction, agentArray);
     }
@@ -171,7 +173,6 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
     public IStrategy getStrategy() {
         return strategy;
     }
-
     @Override
     public int getHomeXY() {
         return playingField.getXyhome();
@@ -179,9 +180,9 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
 
     @Override
     public boolean checkIfOnSpawn() {
-    	return checkIfOnSpawn(getPosx(), getPosy());
+        return checkIfOnSpawn(getPosx(), getPosy());
     }
-    
+
     @Override
     public boolean checkIfOnSpawn(int x, int y) {
         ArrayList<int[]> spawnList = playingField.getSpawnFields();
@@ -222,16 +223,18 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
     public void setPoints(int points) {
         this.points = points;
     }
-    
-	@Override
+
+    @Override
     public int getRememberFieldSize() {
-    	return rememberField.getSize();
+        return rememberField.getSize();
     }
 
+    @Override
     public void setRememberResources(int resources) {
         rememberField.setRememberResources(this, resources);
     }
 
+    @Override
     public int getRememberResources(int x, int y) {
         if (x > rememberField.getSize() - 1) {
             x = rememberField.getSize() - 1;
@@ -242,6 +245,7 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return rememberField.getPlayingField()[x][y].getResources();
     }
 
+    @Override
     public void setRememberResources(int x, int y, int resources) {
         if (x > rememberField.getSize() - 1) {
             x = rememberField.getSize() - 1;
@@ -272,93 +276,93 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return playingField.getMaxAgents();
     }
 
-	@Override
-	public boolean hasEnoughToBuy() throws RemoteException {		
-		return getPoints() >= getAgentsValue();
-	}
+    @Override
+    public boolean hasEnoughToBuy() throws RemoteException {
+        return getPoints() >= getAgentsValue();
+    }
 
-	@Override
-	public boolean hasMaxAgents() throws RemoteException {		
-		return agentArray.length >= getMaxAgents();
-	}
+    @Override
+    public boolean hasMaxAgents() throws RemoteException {
+        return agentArray.length >= getMaxAgents();
+    }
 
-	@Override
-	public boolean checkSpawnIsPossible() throws RemoteException {
-		for (IAgent agent : agentArray) {
+    @Override
+    public boolean checkSpawnIsPossible() throws RemoteException {
+        for (IAgent agent : agentArray) {
             try {
-				if (agent.checkIfOnSpawn()) {
-				    return false;
-				}
-			} catch (RemoteException e) {
-				return false;
-			}          
-		} 
-		return true;
-	}
-	
-	@Override
-	public int getCustomData(int i, int j) throws RemoteException {
-		if (i > customData.length - 1){
-			i = customData.length - 1;
-		}
-		if (j > customData[i].length - 1){
-			j = customData[i].length - 1;
-		}
-		return customData[i][j];
-	}
+                if (agent.checkIfOnSpawn()) {
+                    return false;
+                }
+            } catch (RemoteException e) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public void setCustomData(int i, int j, int data) throws RemoteException {
-		if (i > customData.length - 1){
-			i = customData.length - 1;
-		}
-		if (j > customData[i].length - 1){
-			j = customData[i].length - 1;
-		}
-		customData[i][j] = data;		
-	}
+    @Override
+    public int getCustomData(int i, int j) throws RemoteException {
+        if (i > customData.length - 1) {
+            i = customData.length - 1;
+        }
+        if (j > customData[i].length - 1) {
+            j = customData[i].length - 1;
+        }
+        return customData[i][j];
+    }
 
-	@Override
-	public boolean buyPossible() throws RemoteException {
-		return (hasEnoughToBuy() && checkSpawnIsPossible() && !hasMaxAgents());
-	}
+    @Override
+    public void setCustomData(int i, int j, int data) throws RemoteException {
+        if (i > customData.length - 1) {
+            i = customData.length - 1;
+        }
+        if (j > customData[i].length - 1) {
+            j = customData[i].length - 1;
+        }
+        customData[i][j] = data;
+    }
 
-	@Override
-	public IAgent[] getAgentArray() {
-		return agentArray;
-	}
+    @Override
+    public boolean buyPossible() throws RemoteException {
+        return (hasEnoughToBuy() && checkSpawnIsPossible() && !hasMaxAgents());
+    }
 
-	@Override
-	public void setAgentArray(IAgent[] agentArray) {
-		this.agentArray = agentArray;
-	}
+    @Override
+    public IAgent[] getAgentArray() {
+        return agentArray;
+    }
 
-	@Override
-	public PlayingField getRememberField() throws RemoteException {
-		return rememberField;	
-	}
+    @Override
+    public void setAgentArray(IAgent[] agentArray) {
+        this.agentArray = agentArray;
+    }
 
-	@Override
-	public void setRememberField(PlayingField rememberField) {
-		this.rememberField = rememberField;
-	}
-	
-	@Override
+    @Override
+    public PlayingField getRememberField() throws RemoteException {
+        return rememberField;
+    }
+
+    @Override
+    public void setRememberField(PlayingField rememberField) {
+        this.rememberField = rememberField;
+    }
+
+    @Override
     public void initializeRememberField() throws RemoteException {
-    	for (int i = 0; i < getRememberFieldSize(); i++) {
-    		for (int j = 0; j < getRememberFieldSize(); j++) {
-    			getRememberField().setRememberResources(i,j,-1);
-    		}
-		}
+        for (int i = 0; i < getRememberFieldSize(); i++) {
+            for (int j = 0; j < getRememberFieldSize(); j++) {
+                getRememberField().setRememberResources(i, j, -1);
+            }
+        }
     }
 
-	@Override
+    @Override
     public void mergeRememberField() throws RemoteException {
-		for (IAgent iagent : agentArray) {
-			if (iagent != this)
-				iagent.setRememberField(this.getRememberField());
-		}
+        for (IAgent iagent : agentArray) {
+            if (iagent != this) {
+                iagent.setRememberField(this.getRememberField());
+            }
+        }
     }
-
 
 }

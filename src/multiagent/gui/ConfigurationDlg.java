@@ -7,6 +7,7 @@ package multiagent.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
@@ -15,7 +16,7 @@ import javax.swing.text.JTextComponent;
  * @author Marcel_Meinerz (marcel.meinerz@th-bingen.de)
  * @author Steffen_Hollenbach
  * @author Jasmin_Welschbillig
- * 
+ *
  * @version 1.0
  */
 public class ConfigurationDlg extends javax.swing.JDialog {
@@ -59,6 +60,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         agentsValue = new javax.swing.JTextField();
         maximumLoadField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        soundBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -165,6 +167,9 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         jLabel7.setText("Maximum load:");
         jLabel7.setToolTipText("");
 
+        soundBox.setSelected(true);
+        soundBox.setText("Sound");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -172,13 +177,18 @@ public class ConfigurationDlg extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addGap(64, 64, 64)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(maximumLoadField)
-                    .addComponent(agentsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
-                .addGap(28, 28, 28))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(soundBox)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(64, 64, 64)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(maximumLoadField)
+                            .addComponent(agentsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                        .addGap(28, 28, 28))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +201,9 @@ public class ConfigurationDlg extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(maximumLoadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(soundBox)
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Agent", jPanel2);
@@ -233,7 +245,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
     }//GEN-LAST:event_applyValueChanges
 
     private void resourceFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resourceFieldKeyReleased
-        if(Double.parseDouble(resourceField.getText())>=100){
+        if (Double.parseDouble(resourceField.getText()) >= 100) {
             resourceField.setText("99");
         }
     }//GEN-LAST:event_resourceFieldKeyReleased
@@ -260,6 +272,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField maximumLoadField;
     private javax.swing.JTextField resourceField;
+    private javax.swing.JCheckBox soundBox;
     private javax.swing.JTextField targetAmountField;
     private javax.swing.JComboBox<String> tightnessField;
     // End of variables declaration//GEN-END:variables
@@ -292,12 +305,16 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         return agentsValue;
     }
 
+    public JCheckBox getSoundBox() {
+        return soundBox;
+    }
+
     public JTextField getTargetAmountField() {
         return targetAmountField;
     }
 
-	public JTextComponent getCapacityField() {
-		return maximumLoadField;
-	}
+    public JTextComponent getCapacityField() {
+        return maximumLoadField;
+    }
 
 }
