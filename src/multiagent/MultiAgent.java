@@ -10,25 +10,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.SplashScreen;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
-import java.net.URI;
-
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import multiagent.gui.ServerFrame;
 
 /**
@@ -47,10 +33,7 @@ public class MultiAgent {
     private static String[] operation = new String[]{"Lade Altmeister", "Male Agents", "Baue Spielfeld auf", "Setze Resourcen", "Lade Strategien", "Lade Cheats", "Lösche Doku", "Schreibe 1.0 in SYSA", "Reiße Weltherrschaft an mich", "Reiße Weltherrschaft an mich"};
 
     private static Runnable runRun;
-    static int width, height;
-    static double scale = 0.7;
-    static JFrame videoFrame;
-    static MediaPlayer player;
+    
     
 
     public static void main(String[] args) {
@@ -70,8 +53,7 @@ public class MultiAgent {
                     });
                     frame.setVisible(true);
 
-                    player.pause();
-                    videoFrame.dispose();
+                  
                     new SoundClip("Loaded");
                     
                 });
@@ -94,101 +76,20 @@ public class MultiAgent {
             @Override
             public void run() {
                 Platform.setImplicitExit(false);
-                /*splashInit();           // initialize splash overlay drawing parameters
+                splashInit();           // initialize splash overlay drawing parameters
                 appInit();              // simulate what an application would do */
                 // before starting
                 if (mySplash != null) // check if we really had a spash screen
                 {
                     mySplash.close();   // if so we're now done with it
                 }
-                initAndShowGUI();
-            }
-        });
-
-    }
-
-    private static void initAndShowGUI() {
-        // This method is invoked on Swing thread
-        videoFrame = new JFrame("DEEP OCEAN MINING - THE FIRST RACE");
-        videoFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        WindowListener exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
                 new Thread(runRun).start();
             }
-        };
-        videoFrame.addWindowListener(exitListener);
-        videoFrame.setResizable(false);
-        final JFXPanel fxPanel = new JFXPanel();
-        videoFrame.add(fxPanel);
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
-        int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
-        videoFrame.setLocation(x, y);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                initFX(fxPanel);
-            }
-        });
-    }
-
-    private static void initFX(JFXPanel fxPanel) {
-        // This method is invoked on JavaFX thread
-        Scene scene = null;
-        try {
-            scene = start();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        fxPanel.setScene(scene);
-
-    }
-
-    public static Scene start() throws Exception {
-        URI url2 = MultiAgent.class.getResource("./../resources/Intro_Final_v1.mp4").toURI();
-        final BorderPane root = new BorderPane();
-
-        final Media media = new Media("File://" + url2.getPath());
-        player = new MediaPlayer(media);
-        final MediaView view = new MediaView(player);
-
-        root.getChildren().add(view);
-
-        // Scale Image View
-        view.setScaleX(scale);
-        view.setScaleY(scale);
-
-        Scene scene = new Scene(root);
-
-        player.setOnReady(new Runnable() {
-            @Override
-            public void run() {
-                width = (int) (player.getMedia().getWidth());
-                height = (int) (player.getMedia().getHeight());
-
-                // Move Image View
-                view.setTranslateX(width * (scale - 1) / 2);
-                view.setTranslateY(height * (scale - 1) / 2 - 10);
-
-                //stage.setWidth(w * scale);
-                //stage.setHeight(h * scale + 20);
-                videoFrame.setSize((int) (width * scale), (int) (height * scale));
-                videoFrame.setVisible(true);
-                player.play();
-                player.setOnEndOfMedia(runRun);
-                player.setOnStopped(runRun);
-                player.setOnHalted(runRun);
-                player.setOnError(runRun);
-
-            }
         });
 
-        return scene;
     }
+
+   
 
     private static void splashInit() {
         mySplash = SplashScreen.getSplashScreen();

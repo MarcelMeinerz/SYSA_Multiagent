@@ -5,10 +5,22 @@
  */
 package multiagent.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Desktop;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -19,11 +31,23 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javax.media.CannotRealizeException;
 import javax.swing.ImageIcon;
-
+import javax.swing.JFrame;
+import javax.media.Player;
+import javax.media.Manager;
+import javax.media.NoPlayerException;
 import javax.swing.JOptionPane;
 
 import multiagent.AgentImpl;
+import multiagent.MultiAgent;
 import multiagent.remote.IAgent;
 import multiagent.PlayingField;
 import multiagent.SoundClip;
@@ -60,6 +84,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private String dominator;
     private boolean firstBlood;
     SoundLoopExample sl;
+    static int width, height;
+    static double scale = 0.7;
+    static JFrame videoFrame;
+    static MediaPlayer player;
+    Player mediaPlayer;
 
     /**
      * Creates new form ServerFrame
@@ -113,7 +142,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             this.jTextArea1.append("\nServer is offline, something goes wrong!!!");
             connect = false;
         }
-        if(dialog.getSoundBox().isSelected()){
+        if (dialog.getSoundBox().isSelected()) {
             sl = new SoundLoopExample();
         }
         reconnectBtn.setEnabled(!connect);
@@ -164,6 +193,16 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         config.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 configActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setToolTipText("Click for trailer");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
             }
         });
 
@@ -322,6 +361,41 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             this.jTextArea1.append("\nServer is offline, something goes wrong!!!");
         }
     }//GEN-LAST:event_reconnectBtnActionPerformed
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        this.sl.getPlayer().stop();
+        /*try {
+            Desktop.getDesktop().open(new File(MultiAgent.class.getResource("./../resources/Intro_Final_v1.mp4").getPath()));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        try {
+            mediaPlayer = Manager.createRealizedPlayer(MultiAgent.class.getResource("./../resources/Intro_Final_v1.mp4"));
+            mediaPlayer.realize();
+            JFrame frame = new JFrame("DEEP OCEAN MINING - THE FIRST RACE");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            WindowListener exitListener = new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    mediaPlayer.stop();
+                    frame.dispose();
+                }
+            };
+            frame.addWindowListener(exitListener);
+            frame.setResizable(false);
+            Container con = frame.getContentPane();
+            Component visualcomp = mediaPlayer.getVisualComponent();
+            con.add(visualcomp, BorderLayout.CENTER);
+            con.doLayout();
+            mediaPlayer.start();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | NoPlayerException | CannotRealizeException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //initAndShowGUI();
+        this.sl.getPlayer().play();
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -817,4 +891,87 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private static void initAndShowGUI() {
+        // This method is invoked on Swing thread
+        videoFrame = new JFrame("DEEP OCEAN MINING - THE FIRST RACE");
+        videoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                player.pause();
+                videoFrame.dispose();
+            }
+        };
+        videoFrame.addWindowListener(exitListener);
+        videoFrame.setResizable(false);
+        final JFXPanel fxPanel = new JFXPanel();
+        videoFrame.add(fxPanel);
+
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
+        int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
+        videoFrame.setLocation(x, y);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                initFX(fxPanel);
+            }
+        });
+    }
+
+    private static void initFX(JFXPanel fxPanel) {
+        // This method is invoked on JavaFX thread
+        Scene scene = null;
+        try {
+            scene = start();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        fxPanel.setScene(scene);
+
+    }
+
+    public static Scene start() throws Exception {
+        URI url2 = MultiAgent.class.getResource("./../resources/Intro_Final_v1.mp4").toURI();
+        final BorderPane root = new BorderPane();
+
+        final Media media = new Media("File://" + url2.getPath());
+        player = new MediaPlayer(media);
+        final MediaView view = new MediaView(player);
+
+        root.getChildren().add(view);
+
+        // Scale Image View
+        view.setScaleX(scale);
+        view.setScaleY(scale);
+
+        Scene scene = new Scene(root);
+
+        player.setOnReady(new Runnable() {
+            @Override
+            public void run() {
+                width = (int) (player.getMedia().getWidth());
+                height = (int) (player.getMedia().getHeight());
+
+                // Move Image View
+                view.setTranslateX(width * (scale - 1) / 2);
+                view.setTranslateY(height * (scale - 1) / 2 - 10);
+
+                //stage.setWidth(w * scale);
+                //stage.setHeight(h * scale + 20);
+                videoFrame.setSize((int) (width * scale), (int) (height * scale));
+                videoFrame.setVisible(true);
+                player.play();
+                player.setOnEndOfMedia(this);
+                player.setOnStopped(this);
+                player.setOnHalted(this);
+                player.setOnError(this);
+
+            }
+        });
+
+        return scene;
+    }
 }
