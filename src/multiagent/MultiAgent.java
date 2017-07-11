@@ -17,7 +17,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -30,6 +36,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import multiagent.gui.ServerFrame;
+import multiagent.util.AgentUtils;
+import sun.misc.IOUtils;
 
 /**
  *
@@ -51,7 +59,6 @@ public class MultiAgent {
     static double scale = 0.7;
     static JFrame videoFrame;
     static MediaPlayer player;
-    
 
     public static void main(String[] args) {
         Platform.setImplicitExit(false);
@@ -69,11 +76,10 @@ public class MultiAgent {
                         }
                     });
                     frame.setVisible(true);
-
                     player.pause();
                     videoFrame.dispose();
                     new SoundClip("Loaded");
-                    
+
                 });
 
             }
@@ -94,8 +100,8 @@ public class MultiAgent {
             @Override
             public void run() {
                 Platform.setImplicitExit(false);
-                /*splashInit();           // initialize splash overlay drawing parameters
-                appInit();              // simulate what an application would do */
+                splashInit();           // initialize splash overlay drawing parameters
+                appInit();              // simulate what an application would do 
                 // before starting
                 if (mySplash != null) // check if we really had a spash screen
                 {
@@ -149,10 +155,11 @@ public class MultiAgent {
     }
 
     public static Scene start() throws Exception {
-        URI url2 = MultiAgent.class.getResource("./../resources/Intro_Final_v1.mp4").toURI();
+        //URL url2 = MultiAgent.class.getResource("/multiagent/resources/Intro_Final_v1.mp4");
         final BorderPane root = new BorderPane();
-
-        final Media media = new Media("File://" + url2.getPath());
+        
+        URI uri = AgentUtils.getFile("Intro_Final_v1.mp4", "mp4").toURI();
+        final Media media = new Media("File://"+uri.getPath());
         player = new MediaPlayer(media);
         final MediaView view = new MediaView(player);
 

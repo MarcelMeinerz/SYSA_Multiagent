@@ -12,6 +12,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import multiagent.util.AgentUtils;
 
 public class SoundLoopExample extends Application {
 
@@ -43,11 +44,10 @@ public class SoundLoopExample extends Application {
         final JFXPanel fxPanel = new JFXPanel();
         audioFrame.add(fxPanel);
 
-        String clipTitle = "SnorreTidemand_LeapOfFaith";
-        File audioFile = new File("./src/resources/" + clipTitle + ".wav");
+        clipTitle = "SnorreTidemand_LeapOfFaith.wav";
+        audioFile = AgentUtils.getFile(clipTitle,"wav");
 
-        String path = "file:./src/resources/" + clipTitle + ".wav";
-        path = audioFile.toURI().toString();
+        String path = audioFile.toURI().toString();
 
         final Media media = new Media(path);
         player = new MediaPlayer(media);

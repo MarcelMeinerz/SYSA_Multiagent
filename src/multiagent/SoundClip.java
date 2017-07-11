@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import multiagent.util.AgentUtils;
 
 public class SoundClip  {
 
@@ -21,8 +22,7 @@ public class SoundClip  {
    // Constructor
    public SoundClip(String clipTitle, int milliseconds) {      
       try {	          
-          URL url = getClass().getResource("./../resources/" + clipTitle + ".wav");
-          File soundFile = new File(url.getPath());
+          File soundFile = AgentUtils.getFile(clipTitle + ".wav", "wav");
           
           if (!soundFile.exists()){
         	  System.out.println("Soundfile " + soundFile.getAbsolutePath() + " not found");

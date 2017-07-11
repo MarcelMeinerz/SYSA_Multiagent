@@ -69,7 +69,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         dominator = "";
         firstBlood = false;
         initComponents();
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/resources/title.jpg")));
+        jLabel1.setIcon(new ImageIcon(getClass().getResource("/multiagent/resources/title.jpg")));
         dialog = new ConfigurationDlg(this, true);
         setTitle("Game server");
         agentList = new ArrayList<>();

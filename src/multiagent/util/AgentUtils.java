@@ -6,6 +6,13 @@
 package multiagent.util;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import multiagent.MultiAgent;
 
 /**
  *
@@ -47,7 +54,34 @@ public class AgentUtils {
     	Color.decode(ROSA), //rosa 
     	Color.WHITE
     	};
-    
+    public static File getFile(String resource, String type){
+        File file = null;
+        URL res = MultiAgent.class.getResource("/multiagent/resources/"+resource);
+        if (res.toString().startsWith("jar:")) {
+            try {
+                InputStream input = MultiAgent.class.getResourceAsStream("/multiagent/resources/"+resource);
+                file = File.createTempFile("tempfile", "."+type);
+                OutputStream out = new FileOutputStream(file);
+                int read;
+                byte[] bytes = new byte[1024];
+
+                while ((read = input.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                file.deleteOnExit();
+            } catch (IOException ex) {
+            }
+        } else {
+            //this will probably work in your IDE, but not from a JAR
+            file = new File(res.getFile());
+        }
+
+        if (file != null && !file.exists()) {
+            throw new RuntimeException("Error: File " + file + " not found!");
+        }
+        
+        return file;
+    }
 }
 
 
