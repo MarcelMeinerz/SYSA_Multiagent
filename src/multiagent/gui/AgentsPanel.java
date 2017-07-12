@@ -17,6 +17,7 @@ public class AgentsPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form AgentsPanel
+     * @param name
      */
     public AgentsPanel(String name) {
         initComponents();

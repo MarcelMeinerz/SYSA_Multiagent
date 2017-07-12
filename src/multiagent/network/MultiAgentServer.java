@@ -6,8 +6,6 @@
 package multiagent.network;
 
 import java.net.InetAddress;
-import multiagent.remote.IMultiAgentServer;
-import multiagent.remote.IPlayer;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,6 +13,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import multiagent.gui.ServerFrame;
+import multiagent.remote.IMultiAgentServer;
+import multiagent.remote.IPlayer;
 import multiagent.remote.IStrategy;
 
 /**

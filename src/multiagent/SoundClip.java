@@ -2,8 +2,6 @@ package multiagent;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -12,14 +10,28 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import multiagent.util.AgentUtils;
 
+/**
+ *
+ * @author Donni
+ */
 public class SoundClip  {
 
-	public SoundClip(String clipTitle) { 
+    /**
+     *
+     * @param clipTitle
+     */
+    public SoundClip(String clipTitle) { 
 		this(clipTitle, 0);
 	}
 	
 	
    // Constructor
+
+    /**
+     *
+     * @param clipTitle
+     * @param milliseconds
+     */
    public SoundClip(String clipTitle, int milliseconds) {      
       try {	          
           File soundFile = AgentUtils.getFile(clipTitle + ".wav", "wav");

@@ -1,15 +1,11 @@
 package multiagent.gui;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-
 import multiagent.Field;
-import multiagent.MultiAgent;
 import multiagent.PlayingField;
 
 /**
@@ -29,10 +25,18 @@ public class RenderLife extends JPanel {
     private PlayingField playingField;
     private boolean isClosed;
 
+    /**
+     *
+     * @return
+     */
     public boolean isClosed() {
         return isClosed;
     }
 
+    /**
+     *
+     * @param size
+     */
     public RenderLife(int size) {
     	GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.size = size;
@@ -55,6 +59,10 @@ public class RenderLife extends JPanel {
         f.setVisible(true);
     }
 
+    /**
+     *
+     * @param playingField
+     */
     public RenderLife(PlayingField playingField) {
         this(playingField.getSize());
         this.playingField = playingField;
@@ -106,6 +114,10 @@ public class RenderLife extends JPanel {
 
     }
 
+    /**
+     *
+     * @param g
+     */
     public void drawHome(Graphics g) {
         int middle = size / 2;
         playingField.getPlayingField()[middle][middle] = new Field(0, Color.BLACK);

@@ -6,12 +6,6 @@
 package multiagent.gui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import multiagent.util.AgentUtils;
 
 /**

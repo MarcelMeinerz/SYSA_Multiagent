@@ -17,17 +17,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
-import java.net.URL;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -35,9 +25,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import multiagent.gui.ServerFrame;
 import multiagent.util.AgentUtils;
-import sun.misc.IOUtils;
 
 /**
  *
@@ -60,6 +51,10 @@ public class MultiAgent {
     static JFrame videoFrame;
     static MediaPlayer player;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Platform.setImplicitExit(false);
 
@@ -129,8 +124,8 @@ public class MultiAgent {
         videoFrame.add(fxPanel);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int x = (int) ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
-        int y = (int) ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
+        int x = ((gd.getDisplayMode().getWidth() - videoFrame.getWidth()) / 4);
+        int y = ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
         videoFrame.setLocation(x, y);
 
         Platform.runLater(new Runnable() {
@@ -154,6 +149,11 @@ public class MultiAgent {
 
     }
 
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
     public static Scene start() throws Exception {
         //URL url2 = MultiAgent.class.getResource("/multiagent/resources/Intro_Final_v1.mp4");
         final BorderPane root = new BorderPane();
@@ -174,8 +174,8 @@ public class MultiAgent {
         player.setOnReady(new Runnable() {
             @Override
             public void run() {
-                width = (int) (player.getMedia().getWidth());
-                height = (int) (player.getMedia().getHeight());
+                width = (player.getMedia().getWidth());
+                height = (player.getMedia().getHeight());
 
                 // Move Image View
                 view.setTranslateX(width * (scale - 1) / 2);

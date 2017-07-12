@@ -20,17 +20,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-
 import javax.swing.JOptionPane;
-
 import multiagent.AgentImpl;
-import multiagent.remote.IAgent;
 import multiagent.PlayingField;
 import multiagent.SoundClip;
 import multiagent.SoundLoopExample;
+import multiagent.network.MultiAgentServer;
+import multiagent.remote.IAgent;
 import multiagent.remote.IMultiAgentServer;
 import multiagent.remote.IPlayer;
-import multiagent.network.MultiAgentServer;
 import multiagent.remote.IStrategy;
 import multiagent.util.AgentUtils;
 
@@ -50,7 +48,15 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private final HashMap<String, IPlayer> iPlayerList;
     private int playerCount;
     private final PlayingField playingField;
+
+    /**
+     *
+     */
     public boolean running;
+
+    /**
+     *
+     */
     public boolean aborted;
     private RenderLife renderLife;
     private int targetAmount, agentsValue;
@@ -368,6 +374,12 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private javax.swing.JButton start;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     *
+     * @param player
+     * @param strat
+     * @return
+     */
     public boolean addNewAgent(IPlayer player, IStrategy strat) {
         if (!aborted) {
             return false;
@@ -415,6 +427,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return output;
     }
 
+    /**
+     *
+     */
     public void runGame() {
         start.setEnabled(false);
         Runnable tsk = () -> {
@@ -595,11 +610,16 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return true;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public int getPoints(String name) {
         int points = 0;
         ArrayList<IAgent> iAgentList = playersAgentsMap.get(name);
         for (Iterator<IAgent> iterator2 = iAgentList.iterator(); iterator2.hasNext();) {
-            IAgent iAgent = (IAgent) iterator2.next();
+            IAgent iAgent = iterator2.next();
             try {
                 points = points + iAgent.getPoints();
             } catch (RemoteException e) {
@@ -648,6 +668,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return list;
     }
 
+    /**
+     *
+     */
     public void disposeAll() {
         iPlayerList.entrySet().stream().map((pair) -> (IPlayer) pair.getValue()).forEachOrdered((player) -> {
             try {
@@ -670,7 +693,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             playerCount = 0;
             playerList.removeAll();
             iPlayerList.entrySet().forEach((pair) -> {
-                IPlayer player = (IPlayer) pair.getValue();
+                IPlayer player = pair.getValue();
                 try {
                     player.setPoints(0);
                     player.resetStrategy();
@@ -695,6 +718,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         firstBlood = false;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean checkSpawnTemp() {
 
         int xStart = playingField.getXyhome() - 1;
@@ -763,10 +790,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private ArrayList<IPlayer> sortPlayerAfterPoints() {
         ArrayList<IPlayer> arrlist = new ArrayList<IPlayer>();
 
-        for (Map.Entry pair : iPlayerList.entrySet()) {
-            IPlayer ip = (IPlayer) pair.getValue();
+        iPlayerList.entrySet().stream().map((pair) -> (IPlayer) pair.getValue()).forEachOrdered((ip) -> {
             arrlist.add(ip);
-        }
+        });
 
         Collections.sort(arrlist, new Comparator<IPlayer>() {
             @Override

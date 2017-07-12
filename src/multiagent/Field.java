@@ -1,66 +1,109 @@
 package multiagent;
 
-import multiagent.remote.IAgent;
 import java.awt.Color;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import multiagent.remote.IAgent;
+
 /**
- * 
+ *
  * @author Marcel_Meinerz (marcel.meinerz@th-bingen.de)
  * @author Steffen_Hollenbach
  * @author Jasmin_Welschbillig
- * 
+ *
  * @version 1.0
  */
 
-public class Field implements Serializable{
+public class Field implements Serializable {
 
-	private int resources;
-	private Color color;
-	private IAgent agent;
-	
-        public Field(IAgent agent) throws RemoteException {
-		this(0, agent.getColor(), agent);
-	}
-        
-	public Field(int resources) {
-		this(resources, Color.GRAY, null);
-	}
-	
-	public Field(int resources, Color color) {
-		this(resources, color, null);
-	}
-	
-	public Field(int resources, Color color, IAgent agent) {
-		this.resources = resources;
-		this.color = color;
-		this.agent = agent;
-	}
+    private int resources;
+    private Color color;
+    private IAgent agent;
 
-	public int getResources() {
-		return resources;
-	}
+    /**
+     *
+     * @param agent
+     * @throws RemoteException
+     */
+    public Field(IAgent agent) throws RemoteException {
+        this(0, agent.getColor(), agent);
+    }
 
-	public void setResources(int resources) {
-		this.resources = resources;
-	}
+    /**
+     *
+     * @param resources
+     */
+    public Field(int resources) {
+        this(resources, Color.GRAY, null);
+    }
 
-	public Color getColor() {
-		return color;
-	}
+    /**
+     *
+     * @param resources
+     * @param color
+     */
+    public Field(int resources, Color color) {
+        this(resources, color, null);
+    }
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
+    /**
+     *
+     * @param resources
+     * @param color
+     * @param agent
+     */
+    public Field(int resources, Color color, IAgent agent) {
+        this.resources = resources;
+        this.color = color;
+        this.agent = agent;
+    }
 
-	public IAgent getAgent() {
-		return agent;
-	}
+    /**
+     *
+     * @return
+     */
+    public int getResources() {
+        return resources;
+    }
 
-	public void setIAgent(IAgent agent) {
-		this.agent = agent;
-	}
-	
-	
-	
+    /**
+     *
+     * @param resources
+     */
+    public void setResources(int resources) {
+        this.resources = resources;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     *
+     * @param color
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IAgent getAgent() {
+        return agent;
+    }
+
+    /**
+     *
+     * @param agent
+     */
+    public void setIAgent(IAgent agent) {
+        this.agent = agent;
+    }
+
 }

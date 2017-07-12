@@ -18,11 +18,33 @@ import java.rmi.RemoteException;
  */
 public interface IMultiAgentServer extends Remote {
 
+    /**
+     *
+     * @param name
+     * @param aThis
+     * @return
+     * @throws RemoteException
+     */
     public boolean addPlayer(IPlayer name, IStrategy aThis) throws RemoteException;
 
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     */
     public String print() throws RemoteException;
 
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     */
     public byte[] getIpAddr() throws RemoteException;
 
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     */
     public String getHostname() throws RemoteException;
 }

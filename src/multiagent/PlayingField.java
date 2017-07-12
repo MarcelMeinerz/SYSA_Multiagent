@@ -1,16 +1,11 @@
 package multiagent;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import multiagent.Field;
 import multiagent.remote.IAgent;
 import multiagent.remote.IPlayer;
 import multiagent.util.AgentUtils;
@@ -41,31 +36,63 @@ public class PlayingField implements Serializable {
     private ArrayList<int[]> spawnFields;
 	private int spawnTemperature;
 
+    /**
+     *
+     * @return
+     */
     public HashMap<String, IPlayer> getiPlayerList() {
         return iPlayerList;
     }
 
+    /**
+     *
+     * @param iPlayerList
+     */
     public void setiPlayerList(HashMap<String, IPlayer> iPlayerList) {
         this.iPlayerList = iPlayerList;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAgentsValue() {
         return agentsValue;
     }
 
+    /**
+     *
+     * @param agentsValue
+     */
     public void setAgentsValue(int agentsValue) {
         this.agentsValue = agentsValue;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTargetAmount() {
         return targetAmount;
     }
 
+    /**
+     *
+     * @param targetAmount
+     */
     public void setTargetAmount(int targetAmount) {
         this.targetAmount = targetAmount;
     }
 
-
+    /**
+     *
+     * @param max
+     * @param size
+     * @param tightness
+     * @param list
+     * @param playerCount
+     * @param maxAgents
+     */
     public PlayingField(int max, int size, int tightness, ArrayList<IAgent> list, int playerCount, int maxAgents) {
         this.max = max;
         this.size = size;
@@ -82,6 +109,10 @@ public class PlayingField implements Serializable {
 
     }
 
+    /**
+     *
+     * @param size2
+     */
     public PlayingField(int size2) {
         this.size = size2;
         playingField = new Field[size2][size2];
@@ -93,6 +124,9 @@ public class PlayingField implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void initPlayingField() {
         //i=y, j=x
     	spawnFields.clear();
@@ -133,6 +167,13 @@ public class PlayingField implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param agent
+     * @param direction
+     * @param agentArray
+     * @return
+     */
     public boolean requestField(IAgent agent, String direction, IAgent agentArray[]) {
         try {
             int x = agent.getPosx();
@@ -224,11 +265,20 @@ public class PlayingField implements Serializable {
         }
     }
 
-
+    /**
+     *
+     * @param xPos
+     * @param yPos
+     * @param value
+     */
     public void setOccupancy(int xPos, int yPos, IAgent value) {
         playingField[xPos][yPos].setIAgent(value);
     }
 
+    /**
+     *
+     * @param agent
+     */
     public void spreadAgent(IAgent agent){
     	try {
 	        int xOld = agent.getPosx();
@@ -256,6 +306,11 @@ public class PlayingField implements Serializable {
     	
     }
     
+    /**
+     *
+     * @param agent
+     * @param direction
+     */
     public void moveAgent(IAgent agent, String direction) {
         try {
         	boolean moved = false;
@@ -361,6 +416,11 @@ public class PlayingField implements Serializable {
         return playingField[xPos][yPos].getResources();
     }
 
+    /**
+     *
+     * @param agent
+     * @return
+     */
     public int getResources(IAgent agent) {
         try {
             return getResources(agent.getPosx(), agent.getPosy());
@@ -370,6 +430,11 @@ public class PlayingField implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param agent
+     * @param value
+     */
     public void setResources(IAgent agent, int value) {
         try {
             int xPos = agent.getPosx();
@@ -393,6 +458,11 @@ public class PlayingField implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param agent
+     * @param value
+     */
     public void setRememberResources(IAgent agent, int value) {
         try {
             int xPos = agent.getPosx();
@@ -409,10 +479,20 @@ public class PlayingField implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param value
+     */
     public void setRememberResources(int x, int y, int value) {
         playingField[x][y].setResources(value);
     }
 
+    /**
+     *
+     * @param agent
+     */
     public void takeResources(IAgent agent) {
         try {
             int xPos = agent.getPosx();
@@ -428,103 +508,199 @@ public class PlayingField implements Serializable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Field[][] getPlayingField() {
         return playingField;
     }
 
-    
-
+    /**
+     *
+     * @return
+     */
     public int getNumberOfPlayer() {
         return numberOfPlayer;
     }
 
+    /**
+     *
+     * @param numberOfPlayer
+     */
     public void setNumberOfPlayer(int numberOfPlayer) {
         this.numberOfPlayer = numberOfPlayer;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getXyhome() {
         return xyhome;
     }
 
+    /**
+     *
+     * @param xyhome
+     */
     public void setXyhome(int xyhome) {
         this.xyhome = xyhome;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<IAgent> getList() {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     */
     public void setList(ArrayList<IAgent> list) {
         this.list = list;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     *
+     * @param count
+     */
     public void setCount(int count) {
         this.count = count;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPlayerCount() {
         return playerCount;
     }
 
+    /**
+     *
+     * @param playerCount
+     */
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaxAgents() {
         return maxAgents;
     }
 
+    /**
+     *
+     * @param maxAgents
+     */
     public void setMaxAgents(int maxAgents) {
         this.maxAgents = maxAgents;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTightness() {
         return tightness;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMax() {
         return max;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<int[]> getSpawnFields() {
         return spawnFields;
     }
 
+    /**
+     *
+     * @param size
+     */
     public void setSize(int size) {
         this.size = size;
         playingField = new Field[size][size];
         xyhome = size / 2;
     }
 
+    /**
+     *
+     * @param tightness
+     */
     public void setTightness(int tightness) {
         this.tightness = tightness;
     }
 
+    /**
+     *
+     * @param max
+     */
     public void setMax(int max) {
         this.max = max;
     }
 
+    /**
+     *
+     * @return
+     */
     public PlayingField getField() {
         return this;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean requestField(int x, int y) {
         return playingField[x][y].getAgent() == null;
     }
     
-	public int getSpawnTemperature() {
+    /**
+     *
+     * @return
+     */
+    public int getSpawnTemperature() {
 		return spawnTemperature;
 	}
 
-	public void setSpawnTemperature(int spawnTemperature) {
+    /**
+     *
+     * @param spawnTemperature
+     */
+    public void setSpawnTemperature(int spawnTemperature) {
 		this.spawnTemperature = spawnTemperature;
 	}
 

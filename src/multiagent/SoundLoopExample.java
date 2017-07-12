@@ -1,27 +1,28 @@
 package multiagent;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
-
-import javax.swing.JFrame;
-
 import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javax.swing.JFrame;
 import multiagent.util.AgentUtils;
 
+/**
+ *
+ * @author Donni
+ */
 public class SoundLoopExample extends Application {
 
     String clipTitle = "SnorreTidemand_LeapOfFaith";
     File audioFile = new File("./src/resources/" + clipTitle + ".wav");
     MediaPlayer player;
 
+    /**
+     *
+     */
     public SoundLoopExample() {
-        //launch();
         try {
             start(null);
         } catch (Exception e) {
@@ -30,9 +31,7 @@ public class SoundLoopExample extends Application {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        launch();
-    }
+    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -65,6 +64,11 @@ public class SoundLoopExample extends Application {
         });
 
     }
+
+    /**
+     *
+     * @return
+     */
     public MediaPlayer getPlayer(){
         return player;
     }
