@@ -473,8 +473,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                                 findNextAvailableAgent(playersAgentsMap.get(iAgent.getName()));
                                 break;
                             default:
-                                System.out.println("Planed Exit");
-                                System.exit(0);
+                                System.out.println("Planed Exit, nehme Default (take)");
+                                playingField.takeResources(iAgent);
                         }
 
                     } catch (RemoteException ex) {
@@ -499,7 +499,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 }
                 renderLife.repaint();
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(0);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
