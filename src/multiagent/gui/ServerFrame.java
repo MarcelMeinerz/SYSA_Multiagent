@@ -44,23 +44,15 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     private IMultiAgentServer server;
     private ConfigurationDlg dialog;
-    private final ArrayList<IAgent> agentList;
-    private final HashMap<String, IPlayer> iPlayerList;
+    private ArrayList<IAgent> agentList;
+    private HashMap<String, IPlayer> iPlayerList;
     private int playerCount;
-    private final PlayingField playingField;
-
-    /**
-     *
-     */
-    public boolean running;
-
-    /**
-     *
-     */
-    public boolean aborted;
-    private RenderLife renderLife;
+    private PlayingField playingField;
+    private boolean running;
+    private boolean aborted;
+    private RenderField renderLife;
     private int targetAmount, agentsValue;
-    private final HashMap<String, ArrayList<IAgent>> playersAgentsMap;
+    private HashMap<String, ArrayList<IAgent>> playersAgentsMap;
     private String[][] agentsOnSpawn;
     //Sound indicators
     private String dominator;
@@ -70,11 +62,18 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     /**
      * Creates new form ServerFrame
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ServerFrame() {
-        //Sound indicators
+        initComponents();
+        init();
+        connection();
+    }
+    /**
+     * Diese Methode initialisiert alle Datenelemente der Klasse.
+     */
+    private void init(){
         dominator = "";
         firstBlood = false;
-        initComponents();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/multiagent/resources/title.jpg")));
         dialog = new ConfigurationDlg(this, true);
         setTitle("Game server");
@@ -95,6 +94,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 Integer.parseInt(String.valueOf(dialog.getCountAgents().getSelectedItem())));
         setLocationRelativeTo(null);
         pack();
+    }
+    /**
+     * Diese Methode startet den Server und ermittelt die IP-Adresse des Servers.
+     */
+    private void connection(){
         boolean connect;
         try {
 
@@ -119,13 +123,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             this.jTextArea1.append("\nServer is offline, something goes wrong!!!");
             connect = false;
         }
-        if(dialog.getSoundBox().isSelected()){
+        if (dialog.getMusicBox().isSelected()) {
             sl = new SoundLoopExample();
         }
         reconnectBtn.setEnabled(!connect);
-
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -241,9 +243,12 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Mehtode zum erstellen und initialisieren des Spielfeldes und starten des Spiels.
+     * @param evt ActionEvent
+     */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-        //JOptionPane.showMessageDialog(this, "No game available!", "Here could stay your title", JOptionPane.INFORMATION_MESSAGE);
         if (!aborted) {
             return;
         }
@@ -251,7 +256,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         if (dialog.getSoundBox().isSelected()) {
             new SoundClip("Play", -1);
             try {
-                this.sl.start(null);
+                if (dialog.getMusicBox().isSelected()) {
+                    this.sl.start(null);
+                }
             } catch (Exception ex) {
                 Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -272,7 +279,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         playingField.setiPlayerList(iPlayerList);
         targetAmount = Integer.parseInt(dialog.getTargetAmountField().getText());
         agentsValue = Integer.parseInt(dialog.getAgentsValue().getText());
-        renderLife = new RenderLife(playingField);
+        renderLife = new RenderField(playingField);
         renderLife.repaint();
         agentList.forEach((agent) -> {
             try {
@@ -290,7 +297,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         this.jTextArea1.setText("");
         runGame();
     }//GEN-LAST:event_startActionPerformed
-
+    /**
+     * Methode zum erstellen des Konfigurationsdialoges.
+     * @param evt ActionEvent
+     */
     private void configActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configActionPerformed
         java.awt.EventQueue.invokeLater(() -> {
             if (dialog == null) {
@@ -305,7 +315,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             dialog.setVisible(true);
         });
     }//GEN-LAST:event_configActionPerformed
-
+    /**
+     * Mehtode zu Verbindungsaufbau des Servers.
+     * @param evt ActionEvent
+     */
     private void reconnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reconnectBtnActionPerformed
         try {
             this.jTextArea1.setText("Server starts...");
@@ -329,39 +342,6 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
     }//GEN-LAST:event_reconnectBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    /*public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
- /*try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
- /*java.awt.EventQueue.invokeLater(() -> {
-            new ServerFrame().setVisible(true);
-        });
-    }*/
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton config;
     private javax.swing.JScrollPane console;
@@ -375,10 +355,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
-     * @param player
-     * @param strat
-     * @return
+     * Mehtode zur aufnahme eines Spielers inklusive seiner Strategy.
+     * @param player Spieler
+     * @param strat Strategy des Spielers
+     * @return true wenn der Spieler erfolgreich dem Spiel hinzugefügt wurde, sonst false
      */
     public boolean addNewAgent(IPlayer player, IStrategy strat) {
         if (!aborted) {
@@ -417,7 +397,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         return true;
     }
-
+    /**
+     * Methode zum erstellen eines Array mit dem Datentyp {@link IAgent} eines Spielers.
+     * @param name Name des Spielers
+     * @return IAgent[]
+     */
     private IAgent[] createIAgentArray(String name) {
         IAgent[] output = new IAgent[playersAgentsMap.get(name).size()];
 
@@ -428,7 +412,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }
 
     /**
-     *
+     * Diese Methode startet den Spiele-Thread. Diese lauft solange bis das Ziel erreicht ist oder das Spiel abgebrochen wurde.
+     * {@link Runnable} {@link Thread}
      */
     public void runGame() {
         start.setEnabled(false);
@@ -486,7 +471,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 checkPointSounds();
 
                 if (!(checkPoints() && checkRemainingRes()) || renderLife.isClosed()) {
-                    new SoundClip("EndOfRound", -1);
+                    if (dialog.getSoundBox().isSelected()) {
+                        new SoundClip("EndOfRound", -1);
+                    }
                     aborted = true;
                     running = false;
                     start.setEnabled(true);
@@ -510,7 +497,12 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         Thread t = new Thread(tsk);
         t.start();
     }
-
+    
+    /**
+     * Diese Methode prueft ob es einem Spieler moeglich ist, einen weiteren Agenten zu kaufen.
+     * @param arrayList Liste mit allen Agenten im Spiel.
+     * @return true wenn der kauf moeglich war, sonst false
+     */
     private boolean findNextAvailableAgent(ArrayList<IAgent> arrayList) {
 
         for (IAgent agent : arrayList) {
@@ -559,7 +551,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return false;
 
     }
-
+    /**
+     * Methode zum ueberpruefen der verbleibenden Resourcen auf dem Spielfeld.
+     * @return true wenn sich Rohstoffe auf dem Feld befinden, sonst false
+     */
     private boolean checkRemainingRes() {
         for (int i = 0; i < playingField.getPlayingField().length; i++) {
             for (int j = 0; j < playingField.getPlayingField()[i].length; j++) {
@@ -570,7 +565,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         return false;
     }
-
+    /**
+     * Methode zum ueberpruefen ob Spieler die zu erreichende Rohstoffemenge gesammelt haben.
+     * @return true wenn die zu erreichende Rohstoffemenge gesammelt, sonst false
+     */
     private boolean checkPoints() {
 
         for (Map.Entry pair : playersAgentsMap.entrySet()) {
@@ -611,9 +609,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }
 
     /**
-     *
-     * @param name
-     * @return
+     * Mehtode zur Uebergabe der Punkte eines Spielers
+     * @param name Spieler dessen Punkte uebergeben werden sollen
+     * @return Punkte des Spielers
      */
     public int getPoints(String name) {
         int points = 0;
@@ -629,7 +627,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         return points;
     }
-
+    /**
+     * Mehtode zur Erstellung einer sortierten Liste der Spieler am Ende das Spiels.
+     * @return Liste der Spieler
+     */
     private String getWinnerList() {
         String list = "";
 
@@ -646,16 +647,18 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
 
         try {
-            if (iPlayerList.size() > 0) {
-                if (playersAgentsMap.get(arrlist.get(0).getName()).get(0).getColor().equals(Color.decode(AgentUtils.ROT))) {
-                    new SoundClip("red_team_is_the_winner");
-                } else if (playersAgentsMap.get(arrlist.get(0).getName()).get(0).getColor().equals(Color.decode(AgentUtils.BLAU))) {
-                    new SoundClip("blue_team_is_the_winner");
+            if (dialog.getSoundBox().isSelected()) {
+                if (iPlayerList.size() > 0) {
+                    if (playersAgentsMap.get(arrlist.get(0).getName()).get(0).getColor().equals(Color.decode(AgentUtils.ROT))) {
+                        new SoundClip("red_team_is_the_winner");
+                    } else if (playersAgentsMap.get(arrlist.get(0).getName()).get(0).getColor().equals(Color.decode(AgentUtils.BLAU))) {
+                        new SoundClip("blue_team_is_the_winner");
+                    } else {
+                        new SoundClip("Flawless_victory");
+                    }
                 } else {
-                    new SoundClip("Flawless_victory");
+                    new SoundClip("players_left");
                 }
-            } else {
-                new SoundClip("players_left");
             }
         } catch (NumberFormatException e) {
             // TODO Auto-generated catch block
@@ -669,7 +672,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }
 
     /**
-     *
+     * Methode zum schließen der im Hintergrund laufenden Clients.
      */
     public void disposeAll() {
         iPlayerList.entrySet().stream().map((pair) -> (IPlayer) pair.getValue()).forEachOrdered((player) -> {
@@ -683,7 +686,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         dispose();
         System.exit(0);
     }
-
+    /**
+     * Methode zum erneuten Start des Spiels.
+     */
     private void reload() {
         if (running == false) {
             agentsOnSpawn = new String[][]{{"random", "random", "random"}, {"random", "random", "random"}, {"random", "random", "random"}};
@@ -706,7 +711,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
 
     }
-
+    /**
+     * Methode zum reset der Datenelemente des Spiels.
+     */
     private void reset() {
         PlayerPanel.reset();
         playersAgentsMap.clear();
@@ -719,8 +726,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Methode zum ueberpruefen der \"Temperatur\" des Kerns
+     * @return true wenn immer false??????
      */
     public boolean checkSpawnTemp() {
 
@@ -766,7 +773,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
 
         if (playingField.getSpawnTemperature() >= 10) {
-            new SoundClip("BallReset", -1);
+            if (dialog.getSoundBox().isSelected()) {
+                new SoundClip("BallReset", -1);
+            }
             System.out.println("Temperature too hot, explosion");
             playingField.setSpawnTemperature(0);
 
@@ -786,7 +795,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
         return false;
     }
-
+    /**
+     * Methode zum sortieren einer HashMap
+     * @return ArrayList<IPlayer>
+     */
     private ArrayList<IPlayer> sortPlayerAfterPoints() {
         ArrayList<IPlayer> arrlist = new ArrayList<IPlayer>();
 
@@ -816,6 +828,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return arrlist;
     }
 
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     private void checkPointSounds() {
         ArrayList<IPlayer> arrlist = sortPlayerAfterPoints();
 
@@ -823,7 +836,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             if (iPlayerList.size() > 1) {
                 if (arrlist.get(0).getPoints() >= (arrlist.get(1).getPoints() + (playersAgentsMap.get(arrlist.get(1).getName()).get(0).getCapacity()) * 2)) {
                     if (!dominator.equals(arrlist.get(0).getName())) {
-                        new SoundClip("Dominating");
+                        if (dialog.getSoundBox().isSelected()) {
+                            new SoundClip("Dominating");
+                        }
                     }
                     dominator = arrlist.get(0).getName();
                 }
@@ -831,7 +846,9 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
             if (iPlayerList.size() > 0) {
                 if (arrlist.get(0).getPoints() > 0 && !firstBlood) {
-                    new SoundClip("first_blood");
+                    if (dialog.getSoundBox().isSelected()) {
+                        new SoundClip("first_blood");
+                    }
                     firstBlood = true;
                 }
             }

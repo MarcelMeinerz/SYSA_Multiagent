@@ -11,22 +11,25 @@ import multiagent.util.AgentUtils;
 
 /**
  *
- * @author Donni
+ * @author Marcel_Meinerz (marcel.meinerz@th-bingen.de)
+ * @author Steffen_Hollenbach
+ * @author Jasmin_Welschbillig
+ *
+ * @version 1.0
  */
-public class SoundLoopExample extends Application {
+public final class SoundLoopExample extends Application {
 
-    String clipTitle = "SnorreTidemand_LeapOfFaith";
-    File audioFile = new File("./src/resources/" + clipTitle + ".wav");
+    String clipTitle;
+    File audioFile;
     MediaPlayer player;
 
     /**
-     *
+     * Konstruktor zur initialisierung einer Hintergrund-Schleife
      */
     public SoundLoopExample() {
         try {
             start(null);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

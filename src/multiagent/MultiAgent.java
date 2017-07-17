@@ -107,7 +107,9 @@ public class MultiAgent {
         });
 
     }
-
+    /**
+     * Statische Methode zum erstellen des Intros
+     */
     private static void initAndShowGUI() {
         // This method is invoked on Swing thread
         videoFrame = new JFrame("DEEP OCEAN MINING - THE FIRST RACE");
@@ -135,7 +137,10 @@ public class MultiAgent {
             }
         });
     }
-
+    /**
+     * Statische Methode, die das Video-Panel initialisiert
+     * @param fxPanel 
+     */
     private static void initFX(JFXPanel fxPanel) {
         // This method is invoked on JavaFX thread
         Scene scene = null;
@@ -150,8 +155,8 @@ public class MultiAgent {
     }
 
     /**
-     *
-     * @return
+     * Diese methode startet das Intro
+     * @return Scene mit VideoPanel.
      * @throws Exception
      */
     public static Scene start() throws Exception {
@@ -196,7 +201,9 @@ public class MultiAgent {
 
         return scene;
     }
-
+    /**
+     * Statische Methode zum initialisierne des Splashscreens
+     */
     private static void splashInit() {
         mySplash = SplashScreen.getSplashScreen();
         if (mySplash != null) {   // if there are any problems displaying the splash this will be null

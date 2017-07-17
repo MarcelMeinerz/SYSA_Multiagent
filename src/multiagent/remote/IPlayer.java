@@ -21,57 +21,57 @@ import java.rmi.RemoteException;
 public interface IPlayer extends Remote{
 
     /**
-     *
-     * @param name
-     * @param strat
-     * @return
+     * Methode zum Verbindungsaufbau mit dem Server
+     * @param name Name des Spielers
+     * @param strat Strategy des Spielers
+     * @return true wenn Verbindung aufgebaut wurde, sonst false
      * @throws RemoteException
      */
     public boolean connect(String name, IStrategy strat) throws RemoteException;
             
     /**
-     *
-     * @return
+     * Liefert den Name des Spielers
+     * @return Name des Spielers
      * @throws RemoteException
      */
     public String getName()throws RemoteException;
 
     /**
-     *
-     * @return
+     * Liefert die Startegy des Spielers.
+     * @return Startegy des Spielers
      * @throws RemoteException
      */
     public IStrategy getStrategy() throws RemoteException;
     
     /**
-     *
-     * @param points
+     * Methode zum setzen der Punkte des Spielers.
+     * @param points Punkte des Spielers
      * @throws RemoteException
      */
     public void setPoints(int points) throws RemoteException;
     
     /**
-     *
-     * @return
+     * Liefert die Punkte des Spielers.
+     * @return Punkte des Spielers
      * @throws RemoteException
      */
     public int getPoints() throws RemoteException;
     
     /**
-     *
+     * Methode zum schliessen des Clients.
      * @throws RemoteException
      */
     public void dispose() throws RemoteException;
     
     /**
-     *
-     * @param name
+     * Methode zum setzen des Namens des Spielers
+     * @param name Name des Spielers
      * @throws RemoteException
      */
     public void setName(String name) throws RemoteException;
     
     /**
-     *
+     * Methode zum neustart der Strategie.
      * @throws RemoteException
      */
     public void resetStrategy() throws RemoteException;

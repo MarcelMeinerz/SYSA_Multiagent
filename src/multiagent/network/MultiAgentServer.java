@@ -36,7 +36,10 @@ public class MultiAgentServer extends UnicastRemoteObject implements IMultiAgent
    
     String hostname;
             
-    
+    /**
+     * Konstruktor zur initialisierung des Servers
+     * @throws RemoteException 
+     */
     protected MultiAgentServer() throws RemoteException {
         super();
         LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
@@ -62,13 +65,6 @@ public class MultiAgentServer extends UnicastRemoteObject implements IMultiAgent
         return serverFrame.addNewAgent(name,aThis);
     }
 
-    @Override
-    public String print() throws RemoteException {
-        String test = "test";
-        System.out.println(test);
-        return test;
-    }
-    
     @Override
     public byte[] getIpAddr() {
         return ipAddr;

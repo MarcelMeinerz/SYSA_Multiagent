@@ -19,31 +19,25 @@ import java.rmi.RemoteException;
 public interface IMultiAgentServer extends Remote {
 
     /**
-     *
-     * @param name
-     * @param aThis
+     * Diese Methode Uebergibt den Spieler an das Spiel
+     * @param name  Name des Spielers
+     * @param aThis  Strategy des Spielers
      * @return
      * @throws RemoteException
      */
     public boolean addPlayer(IPlayer name, IStrategy aThis) throws RemoteException;
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
-    public String print() throws RemoteException;
 
     /**
-     *
-     * @return
+     * Diese Methode gibt ein byte[] mit der IP-Adresse des Servers zurueck.
+     * @return IP-Adresse des Servers
      * @throws RemoteException
      */
     public byte[] getIpAddr() throws RemoteException;
 
     /**
-     *
-     * @return
+     * Diese Methode gibt einen String mit dem Hostname des Servers zurueck.
+     * @return Hostname des Servers
      * @throws RemoteException
      */
     public String getHostname() throws RemoteException;

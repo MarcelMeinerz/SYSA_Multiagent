@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import multiagent.network.MultiAgentServer;
 import multiagent.remote.IAgent;
 import multiagent.remote.IStrategy;
 import multiagent.util.AgentUtils;
@@ -30,8 +31,9 @@ import multiagent.util.AgentUtils;
 public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializable {
     //Hello World
 
-    private static int CAPACITY = 2;
-
+    private static int CAPACITY = 1;
+    private static int CUSTOM = 4;
+    
     private int posx;
     private int posy;
     private int capacity;
@@ -49,9 +51,9 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
 
     /**
      *
-     * @param name
-     * @param strategy
-     * @param playingField
+     * @param name Name des Spielers
+     * @param strategy Strategie des Spieler
+     * @param playingField Spielfeld
      * @throws RemoteException
      */
     public AgentImpl(String name, IStrategy strategy, PlayingField playingField) throws RemoteException {
@@ -60,17 +62,29 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
 
     /**
      *
-     * @param name
-     * @param color
-     * @param strategy
-     * @param playingField
+     * @param name Name des Spielers
+     * @param color Spielerfarbe
+     * @param strategy Strategie des Spieler
+     * @param playingField Spielfeld
      * @throws RemoteException
      */
     public AgentImpl(String name, Color color, IStrategy strategy, PlayingField playingField) throws RemoteException {
         this(name, color, 0, 0, CAPACITY, 0, strategy, playingField);
     }
 
-    AgentImpl(String name, Color color, int posx, int posy, int capacity, int load, IStrategy strategy, PlayingField playingField) throws RemoteException {
+    /**
+     *
+     * @param name Name des Spielers
+     * @param color Spielerfarbe
+     * @param posx X-Koordiante der Position des Agents
+     * @param posy Y-Koordiante der Position des Agents
+     * @param capacity Maximale Ladung des Agents
+     * @param load Ladung des Agents
+     * @param strategy Strategie des Spieler
+     * @param playingField Spielfeld
+     * @throws RemoteException
+     */
+    public AgentImpl(String name, Color color, int posx, int posy, int capacity, int load, IStrategy strategy, PlayingField playingField) throws RemoteException {
         super();
         this.posx = posx;
         this.posy = posy;
@@ -83,219 +97,125 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         rememberField = new PlayingField(playingField.getSize());
         points = 0;
         planedPut = 0;
-        customData = new int[8][4];
+        customData = new int[playingField.getMaxAgents()][CUSTOM];
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getPosx() {
         return posx;
     }
 
-    /**
-     *
-     * @param posx
-     */
     @Override
     public void setPosx(int posx) {
         this.posx = posx;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getPosy() {
         return posy;
     }
 
-    /**
-     *
-     * @param posy
-     */
     @Override
     public void setPosy(int posy) {
         this.posy = posy;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getCapacity() {
         return capacity;
     }
 
-    /**
-     *
-     * @param capacity
-     */
     @Override
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getLoad() {
         return load;
     }
 
-    /**
-     *
-     * @param load
-     */
     @Override
     public void setLoad(int load) {
         this.load = load;
     }
 
-    /**
-     *
-     * @param direction
-     */
     @Override
     public void go(String direction) {
         this.setOrder(direction);
     }
 
-    /**
-     *
-     * @param direction
-     * @return
-     */
     @Override
     public boolean requestField(String direction) {
         return playingField.requestField(this, direction, agentArray);
     }
 
-    /**
-     *
-     */
     @Override
     public void take() {
         setOrder(AgentUtils.TAKE);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int check() {
         return playingField.getResources(this);
     }
 
-    /**
-     *
-     */
     @Override
     public void put() {
         setPlanedPut(getLoad());
         setOrder(AgentUtils.PUT);
     }
 
-    /**
-     *
-     * @param value
-     */
     @Override
     public void put(int value) {
         setPlanedPut(value);
         setOrder(AgentUtils.PUT);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String getOrder() {
         return order;
     }
 
-    /**
-     *
-     * @param order
-     */
     @Override
     public void setOrder(String order) {
         this.order = order;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public Color getColor() {
         return color;
     }
 
-    /**
-     *
-     * @param color
-     */
     @Override
     public void setColor(Color color) {
         this.color = color;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public IStrategy getStrategy() {
         return strategy;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getHomeXY() {
         return playingField.getXyhome();
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public boolean checkIfOnSpawn() {
         return checkIfOnSpawn(getPosx(), getPosy());
     }
 
-    /**
-     *
-     * @param x
-     * @param y
-     * @return
-     */
     @Override
     public boolean checkIfOnSpawn(int x, int y) {
         ArrayList<int[]> spawnList = playingField.getSpawnFields();
         int[] currentPos = {x, y};
-
         for (Iterator iterator = spawnList.iterator(); iterator.hasNext();) {
             int[] is = (int[]) iterator.next();
             if (is[0] == currentPos[0] && is[1] == currentPos[1]) {
@@ -307,28 +227,16 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return false;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getPlanedPut() {
         return planedPut;
     }
 
-    /**
-     *
-     * @param planedPut
-     */
     @Override
     public void setPlanedPut(int planedPut) {
         this.planedPut = planedPut;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getPoints() {
         try {
@@ -339,39 +247,21 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return 0;
     }
 
-    /**
-     *
-     * @param points
-     */
     @Override
     public void setPoints(int points) {
         this.points = points;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getRememberFieldSize() {
         return rememberField.getSize();
     }
 
-    /**
-     *
-     * @param resources
-     */
     @Override
     public void setRememberResources(int resources) {
         rememberField.setRememberResources(this, resources);
     }
 
-    /**
-     *
-     * @param x
-     * @param y
-     * @return
-     */
     @Override
     public int getRememberResources(int x, int y) {
         if (x > rememberField.getSize() - 1) {
@@ -383,12 +273,6 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return rememberField.getPlayingField()[x][y].getResources();
     }
 
-    /**
-     *
-     * @param x
-     * @param y
-     * @param resources
-     */
     @Override
     public void setRememberResources(int x, int y, int resources) {
         if (x > rememberField.getSize() - 1) {
@@ -400,68 +284,36 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         rememberField.setRememberResources(x, y, resources);
     }
 
-    /**
-     *
-     */
     @Override
     public void buy() {
         setOrder(AgentUtils.BUY);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int getTargetAmount() {
         return playingField.getTargetAmount();
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public int getAgentsValue() throws RemoteException {
         return playingField.getAgentsValue();
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public int getMaxAgents() throws RemoteException {
         return playingField.getMaxAgents();
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public boolean hasEnoughToBuy() throws RemoteException {
         return getPoints() >= getAgentsValue();
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public boolean hasMaxAgents() throws RemoteException {
         return agentArray.length >= getMaxAgents();
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public boolean checkSpawnIsPossible() throws RemoteException {
         for (IAgent agent : agentArray) {
@@ -476,13 +328,6 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return true;
     }
 
-    /**
-     *
-     * @param i
-     * @param j
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public int getCustomData(int i, int j) throws RemoteException {
         if (i > customData.length - 1) {
@@ -494,13 +339,6 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         return customData[i][j];
     }
 
-    /**
-     *
-     * @param i
-     * @param j
-     * @param data
-     * @throws RemoteException
-     */
     @Override
     public void setCustomData(int i, int j, int data) throws RemoteException {
         if (i > customData.length - 1) {
@@ -512,70 +350,32 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         customData[i][j] = data;
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public boolean buyPossible() throws RemoteException {
         return (hasEnoughToBuy() && checkSpawnIsPossible() && !hasMaxAgents());
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public IAgent[] getAgentArray() {
         return agentArray;
     }
 
-    /**
-     *
-     * @param agentArray
-     */
     @Override
     public void setAgentArray(IAgent[] agentArray) {
         this.agentArray = agentArray;
     }
 
-    /**
-     *
-     * @return
-     * @throws RemoteException
-     */
     @Override
     public PlayingField getRememberField() throws RemoteException {
         return rememberField;
     }
 
-    /**
-     *
-     * @param rememberField
-     */
     @Override
     public void setRememberField(PlayingField rememberField) {
         this.rememberField = rememberField;
     }
+    
 
-    /**
-     *
-     * @throws RemoteException
-     */
-    @Override
-    public void initializeRememberField() throws RemoteException {
-        for (int i = 0; i < getRememberFieldSize(); i++) {
-            for (int j = 0; j < getRememberFieldSize(); j++) {
-                getRememberField().setRememberResources(i, j, -1);
-            }
-        }
-    }
-
-    /**
-     *
-     * @throws RemoteException
-     */
     @Override
     public void mergeRememberField() throws RemoteException {
         for (IAgent iagent : agentArray) {

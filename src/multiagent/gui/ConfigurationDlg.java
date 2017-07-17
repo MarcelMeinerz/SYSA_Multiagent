@@ -6,6 +6,8 @@
 package multiagent.gui;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
@@ -20,11 +22,18 @@ import javax.swing.text.JTextComponent;
  */
 public class ConfigurationDlg extends javax.swing.JDialog {
 
+    ServerFrame parent;
+
     /**
      * Creates new form ConfigurationDlg
+     *
+     * @param parent
+     * @param modal
      */
-    public ConfigurationDlg(java.awt.Frame parent, boolean modal) {
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public ConfigurationDlg(ServerFrame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
         initComponents();
         setTitle("Game configuration");
         setLocationRelativeTo(null);
@@ -60,6 +69,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         maximumLoadField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         soundBox = new javax.swing.JCheckBox();
+        musicBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -169,6 +179,14 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         soundBox.setSelected(true);
         soundBox.setText("Sound");
 
+        musicBox1.setSelected(true);
+        musicBox1.setText("Music");
+        musicBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                musicBox1ItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -176,6 +194,9 @@ public class ConfigurationDlg extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(musicBox1)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(soundBox)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -202,7 +223,9 @@ public class ConfigurationDlg extends javax.swing.JDialog {
                     .addComponent(maximumLoadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(soundBox)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(musicBox1)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Agent", jPanel2);
@@ -249,6 +272,18 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_resourceFieldKeyReleased
 
+    private void musicBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_musicBox1ItemStateChanged
+        try {
+            if (musicBox1.isSelected()) {
+                parent.sl.getPlayer().play();
+            } else {
+                parent.sl.getPlayer().stop();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ConfigurationDlg.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_musicBox1ItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -270,6 +305,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField maximumLoadField;
+    private javax.swing.JCheckBox musicBox1;
     private javax.swing.JTextField resourceField;
     private javax.swing.JCheckBox soundBox;
     private javax.swing.JTextField targetAmountField;
@@ -293,7 +329,6 @@ public class ConfigurationDlg extends javax.swing.JDialog {
 
     private void applyChanges(ActionEvent e) {
         this.setVisible(false);
-
     }
 
     public javax.swing.JComboBox<String> getNumberOfAgents() {
@@ -314,6 +349,10 @@ public class ConfigurationDlg extends javax.swing.JDialog {
 
     public JTextComponent getCapacityField() {
         return maximumLoadField;
+    }
+
+    public JCheckBox getMusicBox() {
+        return musicBox1;
     }
 
 }

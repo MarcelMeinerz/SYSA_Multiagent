@@ -22,7 +22,7 @@ public class Field implements Serializable {
 
     /**
      *
-     * @param agent
+     * @param agent Agent der auf diesem Feld sitzt
      * @throws RemoteException
      */
     public Field(IAgent agent) throws RemoteException {
@@ -31,7 +31,7 @@ public class Field implements Serializable {
 
     /**
      *
-     * @param resources
+     * @param resources Rohstoffe die auf diesem Feld liegen
      */
     public Field(int resources) {
         this(resources, Color.GRAY, null);
@@ -39,8 +39,8 @@ public class Field implements Serializable {
 
     /**
      *
-     * @param resources
-     * @param color
+     * @param resources Rohstoffe die auf diesem Feld liegen
+     * @param color Farbe des Spielers der auf diesem Feld ist
      */
     public Field(int resources, Color color) {
         this(resources, color, null);
@@ -48,9 +48,9 @@ public class Field implements Serializable {
 
     /**
      *
-     * @param resources
-     * @param color
-     * @param agent
+     * @param resources Rohstoffe die auf diesem Feld liegen
+     * @param color Farbe des Spielers der auf diesem Feld ist
+     * @param agent Agent der auf diesem Feld sitzt
      */
     public Field(int resources, Color color, IAgent agent) {
         this.resources = resources;
@@ -59,39 +59,39 @@ public class Field implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Diese Methode gibt die Anzahl der Rohstoffe, die auf diesem Feld liegen, zurück.
+     * @return Anzahl der Rohstoffe
      */
     public int getResources() {
         return resources;
     }
 
     /**
-     *
-     * @param resources
+     * Diese Methode setzt die Anzahl der Rohstoffe auf diesem Feld.
+     * @param resources Rohstoff
      */
     public void setResources(int resources) {
         this.resources = resources;
     }
 
     /**
-     *
-     * @return
+     * Diese Methode gibt die Farbe des Spielers zurück, der sich auf diesem Feld befindet zurück.
+     * @return Spielerfarbe
      */
     public Color getColor() {
         return color;
     }
 
     /**
-     *
-     * @param color
+     * Diese Methode setzt die Farbe des Spielers, der sich auf dem Feld befindet.
+     * @param color Farbe des Spielers
      */
     public void setColor(Color color) {
         this.color = color;
     }
 
     /**
-     *
+     * Diese Methode gibt den Agenten, der sich auf diesem Feld befindet, zurück.
      * @return
      */
     public IAgent getAgent() {
@@ -99,8 +99,8 @@ public class Field implements Serializable {
     }
 
     /**
-     *
-     * @param agent
+     * Diese Methode setzt einen Agent auf das Feld
+     * @param agent Agent eines Spielers
      */
     public void setIAgent(IAgent agent) {
         this.agent = agent;

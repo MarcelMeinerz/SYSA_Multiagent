@@ -25,88 +25,50 @@ import multiagent.MultiAgent;
 public class AgentUtils {
     
     /**
-     *
+     * Order zum bewegen des Agenten
      */
     public static final String GO = "go";
-
     /**
-     *
+     * Order zum ablegen von Rohstoffen des Agenten
      */
     public static final String PUT = "put";
-
     /**
-     *
+     * Order zum aufnehmen von Rohsoffen
      */
     public static final String TAKE = "take";
-
     /**
-     *
+     * Order zum pruefen des Feldes
      */
     public static final String CHECK = "check";
-
     /**
-     *
+     * Order zum setzen der Richtung nach links
      */
     public static final String LEFT = "l";
-
     /**
-     *
+     * Order zum setzen der Richtung nach rechts
      */
     public static final String RIGHT = "r";
-
     /**
-     *
+     * Order zum setzen der Richtung nach oben
      */
     public static final String TOP = "t";
-
     /**
-     *
+     * Order zum setzen der Richtung nach unten
      */
     public static final String BOTTOM = "b";
-
     /**
-     *
+     * Order zum kaufen eines neuen Agenten
      */
     public static final String BUY = "buy";
     
-    /**
-     *
-     */
     public static final String ROT = "#f77462";
-
-    /**
-     *
-     */
     public static final String BLAU = "#659bf2";
-
-    /**
-     *
-     */
     public static final String GELB = "#f7f35b";
-
-    /**
-     *
-     */
     public static final String CYAN = "#60e3f2";
-
-    /**
-     *
-     */
     public static final String LILA = "#b091e0";
-
-    /**
-     *
-     */
     public static final String ORANGE = "#ffa500";
-
-    /**
-     *
-     */
     public static final String ROSA = "#f2a7c2";
     
-    /**
-     *
-     */
     public static  final Color [] COLORS = new Color[]{
     	Color.decode(ROT), //rot 
     	Color.decode(BLAU), //blau
@@ -119,10 +81,10 @@ public class AgentUtils {
     	};
 
     /**
-     *
-     * @param resource
-     * @param type
-     * @return
+     * Util Methode zum laden von Daten (Bilder, Video, Sound) aus der ausfuehrbaren Daten.
+     * @param resource Dateiname der Datei ,die geladen werden soll
+     * @param type Typ der Datei ,die geladen werden soll
+     * @return {@link java.io.File} mit der jeweiligen Datei
      */
     public static File getFile(String resource, String type){
         File file = null;
@@ -142,7 +104,6 @@ public class AgentUtils {
             } catch (IOException ex) {
             }
         } else {
-            //this will probably work in your IDE, but not from a JAR
             file = new File(res.getFile());
         }
 

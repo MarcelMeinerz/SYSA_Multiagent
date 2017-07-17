@@ -16,7 +16,7 @@ import multiagent.PlayingField;
  * 
  * @version 1.0
  */
-public class RenderLife extends JPanel {
+public class RenderField extends JPanel {
 
     static final long serialVersionUID = 1;
     private final int size;
@@ -37,7 +37,7 @@ public class RenderLife extends JPanel {
      *
      * @param size
      */
-    public RenderLife(int size) {
+    public RenderField(int size) {
     	GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.size = size;
         
@@ -63,7 +63,7 @@ public class RenderLife extends JPanel {
      *
      * @param playingField
      */
-    public RenderLife(PlayingField playingField) {
+    public RenderField(PlayingField playingField) {
         this(playingField.getSize());
         this.playingField = playingField;
     }
@@ -88,7 +88,7 @@ public class RenderLife extends JPanel {
                         try {
                             g.setColor(playingField.getPlayingField()[i][j].getAgent().getColor());
                         } catch (RemoteException ex) {
-                            Logger.getLogger(RenderLife.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(RenderField.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     g.fillRect(i * SQ_SIZE, j * SQ_SIZE, SQ_SIZE, SQ_SIZE);
@@ -104,7 +104,7 @@ public class RenderLife extends JPanel {
                         try {
                             g2.drawString(String.valueOf(playingField.getPlayingField()[i][j].getAgent().getLoad()), (int) ((i + 0.3) * SQ_SIZE), (int) ((j + 0.5) * SQ_SIZE));
                         } catch (RemoteException ex) {
-                            Logger.getLogger(RenderLife.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(RenderField.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
