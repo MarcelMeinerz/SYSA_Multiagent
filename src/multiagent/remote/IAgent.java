@@ -87,10 +87,10 @@ public interface IAgent extends Remote {
      * Diese Methode setzt die Order des Agenten auf Bewegung in die angegebene Richtung direction.
      * @param direction
      * <br>Richtungen:
-     * <br><BLOCKQUOTE>     - links : {@link gameclient.AgentUtils#LEFT } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - rechts : {@link gameclient.AgentUtils#RIGHT } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - hoch : {@link gameclient.AgentUtils#TOP } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - runter : {@link gameclient.AgentUtils#BOTTOM } </BLOCKQUOTE>
+     * <br><BLOCKQUOTE>     - links : {@link multiagent.util.AgentUtils#LEFT } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - rechts : {@link multiagent.util.AgentUtils#RIGHT } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - hoch : {@link multiagent.util.AgentUtils#TOP } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - runter : {@link multiagent.util.AgentUtils#BOTTOM } </BLOCKQUOTE>
      * @throws RemoteException
      */
     public void go(String direction) throws RemoteException;
@@ -162,10 +162,10 @@ public interface IAgent extends Remote {
      * Diese Methode prueft ob das Feld in der angebenen Richtung frei ist.
      * @param direction
      * <br>Richtungen:
-     * <br><BLOCKQUOTE>     - links : {@link gameclient.AgentUtils#LEFT } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - rechts : {@link gameclient.AgentUtils#RIGHT } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - hoch : {@link gameclient.AgentUtils#TOP } </BLOCKQUOTE>
-     * <BLOCKQUOTE>     - runter : {@link gameclient.AgentUtils#BOTTOM } </BLOCKQUOTE>
+     * <br><BLOCKQUOTE>     - links : {@link multiagent.util.AgentUtils#LEFT } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - rechts : {@link multiagent.util.AgentUtils#RIGHT } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - hoch : {@link multiagent.util.AgentUtils#TOP } </BLOCKQUOTE>
+     * <BLOCKQUOTE>     - runter : {@link multiagent.util.AgentUtils#BOTTOM } </BLOCKQUOTE>
      * @return true wenn Feld in der angebenen Richtung frei, sonst false
      * @throws RemoteException
      */
@@ -233,7 +233,7 @@ public interface IAgent extends Remote {
     public int getTargetAmount()throws RemoteException;
     
     /**
-     * Diese Methode setzt die Order des Agenten auf {@link gameclient.AgentUtils#BUY}
+     * Diese Methode setzt die Order des Agenten auf {@link multiagent.util.AgentUtils#BUY}
      * Mit Hilfe dieser Methode wird der Kaufvorgang initialisiert.
      * @throws RemoteException
      */
@@ -310,7 +310,6 @@ public interface IAgent extends Remote {
     /**
      * Liefert ein {@code Array} mit allen Agenten des Spielers zurueck
      * @return Array mit allen Agenten des Spielers
-     * {@link #this}
      * @throws RemoteException
      */
     public IAgent[] getAgentArray() throws RemoteException;

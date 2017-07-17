@@ -284,9 +284,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_musicBox1ItemStateChanged
 
-    /**
-     * @param args the command line arguments
-     */
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField agentsValue;
