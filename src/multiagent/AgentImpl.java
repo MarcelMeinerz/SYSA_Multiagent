@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import multiagent.network.MultiAgentServer;
 import multiagent.remote.IAgent;
 import multiagent.remote.IStrategy;
 import multiagent.util.AgentUtils;
@@ -29,7 +28,6 @@ import multiagent.util.AgentUtils;
  *
  */
 public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializable {
-    //Hello World
 
     private static int CAPACITY = 1;
     private static int CUSTOM = 4;
