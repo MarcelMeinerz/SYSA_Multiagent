@@ -81,6 +81,11 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         });
 
         defaultBtn.setText("Restore to default");
+        defaultBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultBtnActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Resource:");
 
@@ -98,7 +103,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
 
         jLabel3.setText("Field dimension (x,y):");
 
-        fieldDimension.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "9x9", "12x12", "15x15", "18x18", "21x21" }));
+        fieldDimension.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "9x9", "15x15", "21x21" }));
 
         jLabel4.setText("Tightness of resources:");
 
@@ -283,6 +288,18 @@ public class ConfigurationDlg extends javax.swing.JDialog {
             Logger.getLogger(ConfigurationDlg.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_musicBox1ItemStateChanged
+
+    private void defaultBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultBtnActionPerformed
+        agentsValue.setText("10");
+        countAgents.setSelectedIndex(0);
+        fieldDimension.setSelectedIndex(0);
+        maximumLoadField.setText("1");
+        musicBox1.setSelected(true);
+        soundBox.setSelected(true);
+        resourceField.setText("10");
+        targetAmountField.setText("100");
+        tightnessField.setSelectedIndex(0);
+    }//GEN-LAST:event_defaultBtnActionPerformed
 
     
 
