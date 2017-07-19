@@ -22,7 +22,7 @@ public class PlayerPanel extends javax.swing.JPanel {
     private final Color color;
     private final String name;
     public static void reset(){
-        incr=0;
+        incr = 0;
     }
     @Override
     public String getName() {

@@ -37,6 +37,7 @@ public class RenderField extends JPanel {
      *
      * @param size
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     public RenderField(int size) {
     	GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.size = size;

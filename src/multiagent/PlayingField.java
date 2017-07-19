@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import multiagent.gui.ServerFrame;
 import multiagent.remote.IAgent;
 import multiagent.remote.IPlayer;
 import multiagent.util.AgentUtils;
@@ -25,7 +26,6 @@ public class PlayingField implements Serializable {
     private int size;
     private int tightness;
     private int max;
-    private int numberOfPlayer;
     private int xyhome;
     private int agentsValue;
     private HashMap<String, IPlayer> iPlayerList;
@@ -52,12 +52,11 @@ public class PlayingField implements Serializable {
         this.size = size;
         this.tightness = tightness;
         this.list = list;
-        numberOfPlayer = list.size();
         this.playerCount = playerCount;
         this.maxAgents = maxAgents;
         playingField = new Field[size][size];
         xyhome = size / 2;
-        spawnFields = new ArrayList<int[]>();
+        spawnFields = new ArrayList<>();
         count = 0;
         spawnTemperature = 0;
 
@@ -361,8 +360,13 @@ public class PlayingField implements Serializable {
                     }
                     break;
             }
-
             if (moved) {
+                try {
+                    assert xOld!=x || yOld!=y : "Agents doesn't. move";
+                } catch (AssertionError err) {
+                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, err);
+                    return;
+                }
                 // old Field
                 setOccupancy(xOld, yOld, null);
                 // new Field
@@ -411,6 +415,7 @@ public class PlayingField implements Serializable {
      * @param agent Agent im Spielfeld
      * @param value Menge an Rohstoffen
      */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public void setResources(IAgent agent, int value) {
         try {
             int xPos = agent.getPosx();
@@ -419,9 +424,7 @@ public class PlayingField implements Serializable {
             if (value > agent.getLoad()) {
                 value = agent.getLoad();
             }
-
             if (agent.checkIfOnSpawn()) {
-                System.out.println("Player" + iPlayerList.size());
                 iPlayerList.get(agent.getName()).setPoints(iPlayerList.get(agent.getName()).getPoints() + value);
             } else {
                 playingField[xPos][yPos].setResources(this.getResources(agent) + value);
@@ -482,7 +485,12 @@ public class PlayingField implements Serializable {
             int yPos = agent.getPosy();
 
             if ((agent.getCapacity() - agent.getLoad() > 0) && (playingField[xPos][yPos].getResources() > 0)) {
-
+                try {
+                    assert playingField[xPos][yPos].getResources() > 0  : "No resource in field";
+                } catch (AssertionError err) {
+                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, err);
+                    return;
+                }
                 agent.setLoad(agent.getLoad() + 1);
                 playingField[xPos][yPos].setResources(playingField[xPos][yPos].getResources() - 1);
             }
@@ -600,6 +608,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode gibt die momentane \"Temperatur\" zurueck.
+     *
      * @return momentane \"Temperatur\"
      */
     public int getSpawnTemperature() {
@@ -608,6 +617,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode setzt die momentane \"Temperatur\" .
+     *
      * @param spawnTemperature momentane \"Temperatur\"
      */
     public void setSpawnTemperature(int spawnTemperature) {
@@ -616,6 +626,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode gibt eine {@link HashMap} zurueck mit allen Spielern.
+     *
      * @return {@link HashMap}
      */
     public HashMap<String, IPlayer> getiPlayerList() {
@@ -624,6 +635,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode setzt eine {@link HashMap} mit allen Spielern
+     *
      * @param iPlayerList {@link HashMap}
      */
     public void setiPlayerList(HashMap<String, IPlayer> iPlayerList) {
@@ -632,6 +644,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode gibt den aktuellen Wert eines Agenten zurueck
+     *
      * @return Wert eines Agenten
      */
     public int getAgentsValue() {
@@ -640,6 +653,7 @@ public class PlayingField implements Serializable {
 
     /**
      * Diese Methode setzt den Wert eines Agenten
+     *
      * @param agentsValue Wert eines Agenten
      */
     public void setAgentsValue(int agentsValue) {
@@ -647,7 +661,9 @@ public class PlayingField implements Serializable {
     }
 
     /**
-     * Liefert die zu erzielende Punktzahl, die benoetigt wird um das Spiel zu gewinnen.
+     * Liefert die zu erzielende Punktzahl, die benoetigt wird um das Spiel zu
+     * gewinnen.
+     *
      * @return zu erzielende Punktzahl
      */
     public int getTargetAmount() {
@@ -655,7 +671,9 @@ public class PlayingField implements Serializable {
     }
 
     /**
-     * Setzt die zu erzielende Punktzahl, die benoetigt wird um das Spiel zu gewinnen.
+     * Setzt die zu erzielende Punktzahl, die benoetigt wird um das Spiel zu
+     * gewinnen.
+     *
      * @param targetAmount zu erzielende Punktzahl
      */
     public void setTargetAmount(int targetAmount) {

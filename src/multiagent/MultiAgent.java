@@ -55,29 +55,25 @@ public class MultiAgent {
      *
      * @param args
      */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public static void main(String[] args) {
         Platform.setImplicitExit(false);
 
-        runRun = new Runnable() {
-
-            @Override
-            public void run() {
-                java.awt.EventQueue.invokeLater(() -> {
-                    ServerFrame frame = new ServerFrame();
-                    frame.addWindowListener(new java.awt.event.WindowAdapter() {
-                        @Override
-                        public void windowClosing(java.awt.event.WindowEvent e) {
-                            frame.disposeAll();
-                        }
-                    });
-                    frame.setVisible(true);
-                    player.pause();
-                    videoFrame.dispose();
-                    new SoundClip("Loaded");
-
+        runRun = () -> {
+            java.awt.EventQueue.invokeLater(() -> {
+                ServerFrame frame = new ServerFrame();
+                frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        frame.disposeAll();
+                    }
                 });
-
-            }
+                frame.setVisible(true);
+                player.pause();
+                videoFrame.dispose();
+                new SoundClip("Loaded");
+                
+            });
         };
 
         try {
@@ -91,19 +87,16 @@ public class MultiAgent {
             java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Platform.setImplicitExit(false);
-                splashInit();           // initialize splash overlay drawing parameters
-                appInit();              // simulate what an application would do 
-                // before starting
-                if (mySplash != null) // check if we really had a spash screen
-                {
-                    mySplash.close();   // if so we're now done with it
-                }
-                initAndShowGUI();
+        SwingUtilities.invokeLater(() -> {
+            Platform.setImplicitExit(false);
+            splashInit();           // initialize splash overlay drawing parameters
+            appInit();              // simulate what an application would do
+            // before starting
+            if (mySplash != null) // check if we really had a spash screen
+            {
+                mySplash.close();   // if so we're now done with it
             }
+            initAndShowGUI();
         });
 
     }
@@ -130,11 +123,8 @@ public class MultiAgent {
         int y = ((gd.getDisplayMode().getHeight() - videoFrame.getHeight()) / 4);
         videoFrame.setLocation(x, y);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                initFX(fxPanel);
-            }
+        Platform.runLater(() -> {
+            initFX(fxPanel);
         });
     }
     /**
@@ -176,27 +166,23 @@ public class MultiAgent {
 
         Scene scene = new Scene(root);
 
-        player.setOnReady(new Runnable() {
-            @Override
-            public void run() {
-                width = (player.getMedia().getWidth());
-                height = (player.getMedia().getHeight());
-
-                // Move Image View
-                view.setTranslateX(width * (scale - 1) / 2);
-                view.setTranslateY(height * (scale - 1) / 2 - 10);
-
-                //stage.setWidth(w * scale);
-                //stage.setHeight(h * scale + 20);
-                videoFrame.setSize((int) (width * scale), (int) (height * scale));
-                videoFrame.setVisible(true);
-                player.play();
-                player.setOnEndOfMedia(runRun);
-                player.setOnStopped(runRun);
-                player.setOnHalted(runRun);
-                player.setOnError(runRun);
-
-            }
+        player.setOnReady(() -> {
+            width = (player.getMedia().getWidth());
+            height = (player.getMedia().getHeight());
+            
+            // Move Image View
+            view.setTranslateX(width * (scale - 1) / 2);
+            view.setTranslateY(height * (scale - 1) / 2 - 10);
+            
+            //stage.setWidth(w * scale);
+            //stage.setHeight(h * scale + 20);
+            videoFrame.setSize((int) (width * scale), (int) (height * scale));
+            videoFrame.setVisible(true);
+            player.play();
+            player.setOnEndOfMedia(runRun);
+            player.setOnStopped(runRun);
+            player.setOnHalted(runRun);
+            player.setOnError(runRun);
         });
 
         return scene;
@@ -208,11 +194,11 @@ public class MultiAgent {
         mySplash = SplashScreen.getSplashScreen();
         if (mySplash != null) {   // if there are any problems displaying the splash this will be null
             Dimension ssDim = mySplash.getSize();
-            int height = ssDim.height;
-            int width = ssDim.width;
+            int splashHeight = ssDim.height;
+            int splashWidth = ssDim.width;
             // stake out some area for our status information
 
-            splashProgressArea = new Rectangle2D.Double(0, height * .92, width, 12);
+            splashProgressArea = new Rectangle2D.Double(0, splashHeight * .92, splashWidth, 12);
 
             // create the Graphics environment for drawing status info
             splashGraphics = mySplash.createGraphics();
@@ -236,11 +222,10 @@ public class MultiAgent {
             // really is a Splash being displayed
 
             Dimension ssDim = mySplash.getSize();
-            int height = ssDim.height;
-            int width = ssDim.width;
+            int splashHeight = ssDim.height;
+            int splashWidth = ssDim.width;
             splashGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f));
-            splashTextArea = new Rectangle2D.Double(3., height * .85, width * .45, 20.);
-            //splashGraphics.clearRect(0, 0, width, height);
+            splashTextArea = new Rectangle2D.Double(3., splashHeight * .85, splashWidth * .45, 20.);
             // erase the last status text
             splashGraphics.setPaint(new Color(0f, 0f, 0f, 0f));
             splashGraphics.fill(splashTextArea);
@@ -293,6 +278,7 @@ public class MultiAgent {
      * just a stub to simulate a long initialization task that updates the text
      * and progress parts of the status in the Splash
      */
+    @SuppressWarnings("SleepWhileInLoop")
     private static void appInit() {
         for (int i = 1; i <= 10; i++) {
             int pctDone = i * 10;

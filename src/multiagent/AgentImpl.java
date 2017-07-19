@@ -217,7 +217,6 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
         for (Iterator iterator = spawnList.iterator(); iterator.hasNext();) {
             int[] is = (int[]) iterator.next();
             if (is[0] == currentPos[0] && is[1] == currentPos[1]) {
-                //System.out.println("On Home");
                 return true;
             }
 

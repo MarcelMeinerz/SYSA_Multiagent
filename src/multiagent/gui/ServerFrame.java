@@ -58,6 +58,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private String dominator;
     private boolean firstBlood;
     SoundLoopExample sl;
+    private final long DELAY = 0;
 
     /**
      * Creates new form ServerFrame
@@ -68,10 +69,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         init();
         connection();
     }
+
     /**
      * Diese Methode initialisiert alle Datenelemente der Klasse.
      */
-    private void init(){
+    private void init() {
         dominator = "";
         firstBlood = false;
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/multiagent/resources/title.jpg")));
@@ -95,13 +97,14 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         setLocationRelativeTo(null);
         pack();
     }
+
     /**
-     * Diese Methode startet den Server und ermittelt die IP-Adresse des Servers.
+     * Diese Methode startet den Server und ermittelt die IP-Adresse des
+     * Servers.
      */
-    private void connection(){
+    private void connection() {
         boolean connect;
         try {
-
             connect = true;
             this.jTextArea1.setText("Server starts...");
             server = new MultiAgentServer(this);
@@ -128,6 +131,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         reconnectBtn.setEnabled(!connect);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -244,11 +248,20 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
-     * Mehtode zum erstellen und initialisieren des Spielfeldes und starten des Spiels.
+     * Mehtode zum erstellen und initialisieren des Spielfeldes und starten des
+     * Spiels.
+     *
      * @param evt ActionEvent
      */
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
+        try {
+            assert dialog!=null : "No configuration found.";
+            assert playingField!=null : "No playing field found.";
+        } catch (AssertionError err) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, err);
+            return;
+        }
         if (!aborted) {
             return;
         }
@@ -299,6 +312,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }//GEN-LAST:event_startActionPerformed
     /**
      * Methode zum erstellen des Konfigurationsdialoges.
+     *
      * @param evt ActionEvent
      */
     private void configActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configActionPerformed
@@ -317,6 +331,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }//GEN-LAST:event_configActionPerformed
     /**
      * Mehtode zu Verbindungsaufbau des Servers.
+     *
      * @param evt ActionEvent
      */
     private void reconnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reconnectBtnActionPerformed
@@ -355,12 +370,21 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Mehtode zur aufnahme eines Spielers inklusive seiner Strategy.
+     * Methode zur Aufnahme eines Spielers inklusive seiner Strategy.
+     *
      * @param player Spieler
      * @param strat Strategy des Spielers
-     * @return true wenn der Spieler erfolgreich dem Spiel hinzugefügt wurde, sonst false
+     * @return true wenn der Spieler erfolgreich dem Spiel hinzugefügt wurde,
+     * sonst false
      */
     public boolean addNewAgent(IPlayer player, IStrategy strat) {
+        try {
+            assert player!=null : "No player found.";
+            assert strat!=null : "No strategy found";
+        } catch (AssertionError err) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, err);
+            return false;
+        }
         if (!aborted) {
             return false;
         }
@@ -397,8 +421,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         return true;
     }
+
     /**
-     * Methode zum erstellen eines Array mit dem Datentyp {@link IAgent} eines Spielers.
+     * Methode zum erstellen eines Array mit dem Datentyp {@link IAgent} eines
+     * Spielers.
+     *
      * @param name Name des Spielers
      * @return IAgent[]
      */
@@ -412,11 +439,13 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     }
 
     /**
-     * Diese Methode startet den Spiele-Thread. Diese lauft solange bis das Ziel erreicht ist oder das Spiel abgebrochen wurde.
+     * Diese Methode startet den Spiele-Thread. Diese lauft solange bis das Ziel
+     * erreicht ist oder das Spiel abgebrochen wurde.
      * {@link Runnable} {@link Thread}
      */
     public void runGame() {
         start.setEnabled(false);
+        @SuppressWarnings("ResultOfObjectAllocationIgnored")
         Runnable tsk = () -> {
             while (running) {
                 agentList.clear();
@@ -425,6 +454,14 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 }).forEachOrdered((iAgentList) -> {
                     agentList.addAll(iAgentList);
                 });
+                try {
+                    assert !agentList.isEmpty() : "No agents in game. Game finished";
+                } catch (AssertionError err) {
+                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, err);
+                    aborted = true;
+                    running = false;
+                    start.setEnabled(true);
+                }
                 for (IAgent iAgent : agentList) {
                     try {
                         try {
@@ -458,7 +495,6 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                                 findNextAvailableAgent(playersAgentsMap.get(iAgent.getName()));
                                 break;
                             default:
-                                System.out.println("Planed Exit, nehme Default (take)");
                                 playingField.takeResources(iAgent);
                         }
 
@@ -486,9 +522,8 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 }
                 renderLife.repaint();
                 try {
-                    Thread.sleep(0);
+                    Thread.sleep(DELAY);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
@@ -497,9 +532,11 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         Thread t = new Thread(tsk);
         t.start();
     }
-    
+
     /**
-     * Diese Methode prueft ob es einem Spieler moeglich ist, einen weiteren Agenten zu kaufen.
+     * Diese Methode prueft ob es einem Spieler moeglich ist, einen weiteren
+     * Agenten zu kaufen.
+     *
      * @param arrayList Liste mit allen Agenten im Spiel.
      * @return true wenn der kauf moeglich war, sonst false
      */
@@ -521,7 +558,6 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                     if (iPlayerList.get(agent.getName()).getPoints() >= agentsValue) {
                         for (int[] spawn : playingField.getSpawnFields()) {
                             if (playingField.requestField(spawn[0], spawn[1])) {
-                                System.out.println("Empty spawn found");
                                 IAgent newAgent = new AgentImpl(agent.getName(), agent.getStrategy(), playingField);
                                 newAgent.setColor(agent.getColor());
                                 newAgent.setPosx(spawn[0]);
@@ -551,8 +587,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         return false;
 
     }
+
     /**
      * Methode zum ueberpruefen der verbleibenden Resourcen auf dem Spielfeld.
+     *
      * @return true wenn sich Rohstoffe auf dem Feld befinden, sonst false
      */
     private boolean checkRemainingRes() {
@@ -565,9 +603,13 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
         return false;
     }
+
     /**
-     * Methode zum ueberpruefen ob Spieler die zu erreichende Rohstoffemenge gesammelt haben.
-     * @return true wenn die zu erreichende Rohstoffemenge gesammelt, sonst false
+     * Methode zum ueberpruefen ob Spieler die zu erreichende Rohstoffemenge
+     * gesammelt haben.
+     *
+     * @return true wenn die zu erreichende Rohstoffemenge gesammelt, sonst
+     * false
      */
     private boolean checkPoints() {
 
@@ -591,14 +633,12 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
                 }
             } catch (RemoteException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
             if (points >= targetAmount) {
                 try {
                     System.out.println(iAgentList.get(0).getName() + " has won with " + points + " points");
                 } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 return false;
@@ -610,6 +650,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     /**
      * Mehtode zur Uebergabe der Punkte eines Spielers
+     *
      * @param name Spieler dessen Punkte uebergeben werden sollen
      * @return Punkte des Spielers
      */
@@ -621,16 +662,19 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             try {
                 points = points + iAgent.getPoints();
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         return points;
     }
+
     /**
-     * Mehtode zur Erstellung einer sortierten Liste der Spieler am Ende das Spiels.
+     * Mehtode zur Erstellung einer sortierten Liste der Spieler am Ende das
+     * Spiels.
+     *
      * @return Liste der Spieler
      */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     private String getWinnerList() {
         String list = "";
 
@@ -641,7 +685,6 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                 list += i.getName();
                 list += ": " + i.getPoints() + "\n";
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -660,11 +703,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                     new SoundClip("players_left");
                 }
             }
-        } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+        } catch (NumberFormatException | RemoteException e) {
             e.printStackTrace();
         }
 
@@ -686,6 +725,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         dispose();
         System.exit(0);
     }
+
     /**
      * Methode zum erneuten Start des Spiels.
      */
@@ -711,6 +751,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         }
 
     }
+
     /**
      * Methode zum reset der Datenelemente des Spiels.
      */
@@ -727,9 +768,10 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
     /**
      * Methode zum ueberpruefen der \"Temperatur\" des Kerns
-     * @return true wenn immer false??????
+     *
      */
-    public boolean checkSpawnTemp() {
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
+    public void checkSpawnTemp() {
 
         int xStart = playingField.getXyhome() - 1;
         int yStart = playingField.getXyhome() - 1;
@@ -748,14 +790,12 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                             tmp = "SoWirdSichKeinSpielerNennen123";
                         }
 
-                        //System.out.println("Compare '" + tmp + "' with '" + agentsOnSpawn[i][j] + "' : " + agentsOnSpawn[i][j].equals(tmp) + ", " + i + j);
                         if (!agentsOnSpawn[i][j].equals(tmp)) {
                             changed = true;
                         }
                         agentsOnSpawn[i][j] = tmp;
 
                     } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
@@ -793,36 +833,33 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
 
         }
 
-        return false;
     }
+
     /**
      * Methode zum sortieren einer HashMap
+     *
      * @return ArrayList<IPlayer>
      */
     private ArrayList<IPlayer> sortPlayerAfterPoints() {
-        ArrayList<IPlayer> arrlist = new ArrayList<IPlayer>();
+        ArrayList<IPlayer> arrlist = new ArrayList<>();
 
         iPlayerList.entrySet().stream().map((pair) -> (IPlayer) pair.getValue()).forEachOrdered((ip) -> {
             arrlist.add(ip);
         });
 
-        Collections.sort(arrlist, new Comparator<IPlayer>() {
-            @Override
-            public int compare(IPlayer p1, IPlayer p2) {
-                try {
-                    if (p1.getPoints() == p2.getPoints()) {
-                        return 0;
-                    } else if (p1.getPoints() > p2.getPoints()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        Collections.sort(arrlist, (IPlayer p1, IPlayer p2) -> {
+            try {
+                if (p1.getPoints() == p2.getPoints()) {
+                    return 0;
+                } else if (p1.getPoints() > p2.getPoints()) {
+                    return -1;
+                } else {
+                    return 1;
                 }
-                return 0;
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
+            return 0;
         });
 
         return arrlist;
@@ -854,7 +891,6 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
             }
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

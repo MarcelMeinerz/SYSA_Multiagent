@@ -54,16 +54,10 @@ public final class SoundLoopExample extends Application {
         final Media media = new Media(path);
         player = new MediaPlayer(media);
 
-        player.setOnReady(new Runnable() {
-            @Override
-            public void run() {
-
-                player.setVolume(0.7);
-                player.setCycleCount(Integer.MAX_VALUE);
-                player.play();
-
-            }
-
+        player.setOnReady(() -> {
+            player.setVolume(0.7);
+            player.setCycleCount(Integer.MAX_VALUE);
+            player.play();
         });
 
     }
