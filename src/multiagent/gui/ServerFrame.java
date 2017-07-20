@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import multiagent.AgentImpl;
@@ -58,7 +59,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
     private String dominator;
     private boolean firstBlood;
     SoundLoopExample sl;
-    private final long DELAY = 0;
+    private long DELAY = 0;
 
     /**
      * Creates new form ServerFrame
@@ -293,6 +294,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
         targetAmount = Integer.parseInt(dialog.getTargetAmountField().getText());
         agentsValue = Integer.parseInt(dialog.getAgentsValue().getText());
         renderLife = new RenderField(playingField);
+        DELAY = dialog.getDelay();
         renderLife.repaint();
         agentList.forEach((agent) -> {
             try {
@@ -516,7 +518,7 @@ public class ServerFrame extends javax.swing.JFrame implements Serializable {
                     //The Winner is...
                     String message = getWinnerList();
                     if (!message.equals("")) {
-                        JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION);
+                        JOptionPane.showMessageDialog(this, message, "The Winner is...", JOptionPane.OK_OPTION,new ImageIcon(getClass().getResource("/multiagent/resources/title.jpg")) );
                     }
 
                 }

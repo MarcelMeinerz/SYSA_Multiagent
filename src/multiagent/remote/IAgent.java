@@ -377,7 +377,8 @@ public interface IAgent extends Remote {
 
     /**
      * Setzt alle Felder des RememberFields auf -1.
+     * @throws java.rmi.RemoteException
      */
-    public void clearRememberField();
+    public void clearRememberField() throws RemoteException;
     
 }

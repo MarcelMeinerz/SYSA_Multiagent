@@ -68,8 +68,11 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         agentsValue = new javax.swing.JTextField();
         maximumLoadField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         soundBox = new javax.swing.JCheckBox();
         musicBox1 = new javax.swing.JCheckBox();
+        jLabel8 = new javax.swing.JLabel();
+        delayField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -181,17 +184,6 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         jLabel7.setText("Maximum load:");
         jLabel7.setToolTipText("");
 
-        soundBox.setSelected(true);
-        soundBox.setText("Sound");
-
-        musicBox1.setSelected(true);
-        musicBox1.setText("Music");
-        musicBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                musicBox1ItemStateChanged(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -199,21 +191,13 @@ public class ConfigurationDlg extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(musicBox1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(soundBox)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addGap(64, 64, 64)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(maximumLoadField)
-                            .addComponent(agentsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
-                        .addGap(28, 28, 28))))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(64, 64, 64)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maximumLoadField)
+                    .addComponent(agentsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,14 +210,65 @@ public class ConfigurationDlg extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(maximumLoadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(soundBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(musicBox1)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Agent", jPanel2);
+
+        soundBox.setSelected(true);
+        soundBox.setText("Sound");
+
+        musicBox1.setSelected(true);
+        musicBox1.setText("Music");
+        musicBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                musicBox1ItemStateChanged(evt);
+            }
+        });
+
+        jLabel8.setText("Delay in ms");
+
+        delayField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        delayField.setText("1000");
+        delayField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delayFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(musicBox1)
+                            .addComponent(soundBox))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addComponent(delayField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(delayField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(soundBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(musicBox1)
+                .addContainerGap(106, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Game", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -259,7 +294,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jTabbedPane1)
-                    .addGap(0, 43, Short.MAX_VALUE)))
+                    .addGap(0, 41, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("Field");
@@ -301,6 +336,10 @@ public class ConfigurationDlg extends javax.swing.JDialog {
         tightnessField.setSelectedIndex(0);
     }//GEN-LAST:event_defaultBtnActionPerformed
 
+    private void delayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delayFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_delayFieldActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -308,6 +347,7 @@ public class ConfigurationDlg extends javax.swing.JDialog {
     private javax.swing.JButton applyBtn;
     private javax.swing.JComboBox<String> countAgents;
     private javax.swing.JButton defaultBtn;
+    private javax.swing.JTextField delayField;
     private javax.swing.JComboBox<String> fieldDimension;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -316,8 +356,10 @@ public class ConfigurationDlg extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField maximumLoadField;
     private javax.swing.JCheckBox musicBox1;
@@ -368,6 +410,10 @@ public class ConfigurationDlg extends javax.swing.JDialog {
 
     public JCheckBox getMusicBox() {
         return musicBox1;
+    }
+
+    long getDelay() {
+        return Long.parseLong(delayField.getText());
     }
 
 }
