@@ -374,5 +374,10 @@ public interface IAgent extends Remote {
      * @throws RemoteException
      */
     public void mergeRememberField() throws RemoteException;
-	
+
+    /**
+     * Setzt alle Felder des RememberFields auf -1.
+     */
+    public void clearRememberField();
+    
 }

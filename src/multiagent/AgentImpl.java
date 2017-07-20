@@ -381,5 +381,15 @@ public class AgentImpl extends UnicastRemoteObject implements IAgent, Serializab
             }
         }
     }
+    
+    @Override
+    public void clearRememberField() throws RemoteException {
+        for (int i = 0; i < getRememberFieldSize(); i++) {
+            for (int j = 0; j < getRememberFieldSize(); j++) {
+                getRememberField().setRememberResources(i, j, -1);
+            }
+        }
+    }
+
 
 }
